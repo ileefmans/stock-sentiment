@@ -1,3 +1,8 @@
+![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)  
+![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)  
+![GitHub top language](https://img.shields.io/github/languages/top/ileefmans/stock-sentiment)  
+  
+  
 # Stock Sentiment
 
 This application scrapes Reddit to extract sentiment for a desired stock and then factors this information into predictions about the stocks future direction.
