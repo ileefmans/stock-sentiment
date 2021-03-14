@@ -9,14 +9,14 @@ reddit = praw.Reddit(client_id='pjzGSwuoF7dgxA', client_secret='PIW3cZ1TiX9i5VVh
 #Blank list for hottest posts and their attributes
 posts = []
 
-# obtain top 10 hottest posts from wallstreetbets
-hot_posts = reddit.subreddit('wallstreetbets').hot(limit=10)
+# obtain most recent posts from wallstreetbets with regard to GME
+queried_posts = reddit.subreddit('wallstreetbets').search("GME", 'hot', 'day')
 
-print("TOP 10 HOTTEST POSTS ON /rwallstreetbets: \n \n")
+print("TOP 10 GME POSTS ON /rwallstreetbets: \n \n")
 
-# Loop through 10 hottest posts and print title
+# Loop through 10 GME posts and print title
 count=1
-for post in hot_posts:
+for post in queried_posts:
     print("Post #{}:   {}\n".format(count, post.title))
     count+=1
 
@@ -25,13 +25,13 @@ for post in hot_posts:
 
 # Create Dataframe for top 10 hottest posts
 posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'subreddit', 'url', 'num_comments', 'body', 'created'])
-print(posts)
 
 
-url = posts.url[0]
-submission = reddit.submission(url = url)
+id = posts.id[0]
+submission = reddit.submission(id = id)
 
 print("\n \n \n \n \n \n")
-# for top_level_comment in submission.comments:
-#     print(top_level_comment.body)
-print(len(submission.comments))
+# remove all "More Comments"
+#submission.comments.replace_more(limit=0)
+for top_level_comment in submission.comments:
+    print(top_level_comment.body)
