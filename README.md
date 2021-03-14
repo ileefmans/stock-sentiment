@@ -8,7 +8,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   
   **Create Conda Environment**  
   
-  Download Anaconda[https://www.anaconda.com/products/individual/get-started]  
+  [Download Anaconda](https://www.anaconda.com/products/individual/get-started) 
   
   Run the following commands:  
   
