@@ -1,7 +1,13 @@
 import pymongo
 from pymongo import MongoClient
+import argparse
+from scrape import GetData
 
 
+def get_args():
+    parser = argparse.ArgumentParser(description="Model Options")
+    parser.add_argument("stock", type=str, help="stock searched and added to database")
+    return parser.parse_args()
 
 
 class Database:
@@ -20,7 +26,7 @@ class Database:
 		self.client = MongoClient(host="localhost", port=27017) 
 
 		# Create database
-		self.db = client["RedditComments"]
+		self.db = self.client["RedditComments"]
 		# print list of databases after creation
 		# print(client.list_database_names())
 
@@ -34,23 +40,50 @@ class Database:
 		"""
 		
 		# Create collection
-		collection = db[name]
+		collection = self.db[name]
 		# Print collections
-		print(db.list_collection_names())
+		print(self.db.list_collection_names())
 
 
 		# FOR DELETING COLLECTIONS
 		#collection.delete_many({})
 
 
-	def insert_document(self, name, post):
+	def insert_document(self, collection_name, name, post):
 
-		collection.insert_one(post)
+		self.db[collection_name].insert_one(post)
 
 
-		cursor = db["teststock"].find({})
+		# cursor = db["teststock"].find({})
 
-		for i in cursor:
+		# for i in cursor:
+		# 	print(i)
+
+
+if __name__ == "__main__":
+	ops = get_args()
+	name = ops.stock
+
+	database = Database("RedditComments")
+	print("DONE INSTATNIATING DATABASE")
+	database.create_collection(name)
+	print("DONE CREATING COLLECTION")
+	getdata = GetData(name)
+	database.insert_document(name, "posts",getdata.process())
+
+
+
+
+
+	cursor = database.db[name].find({})
+
+	count = 0
+	for i in cursor:
+		if count<10:
 			print(i)
+		count+=1
+
+
+
 
 
