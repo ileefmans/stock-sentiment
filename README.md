@@ -1,5 +1,5 @@
-![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)  
-![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)  
+![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
+![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/ileefmans/stock-sentiment)  
   
   
