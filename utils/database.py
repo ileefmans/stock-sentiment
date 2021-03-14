@@ -43,12 +43,7 @@ class Database:
 		#collection.delete_many({})
 
 
-	def insert_documents(self, name):
-
-
-		post = {"post1": ["comment1", "comment2"], "post2": ["comment1", "comment2"]}
-
-
+	def insert_document(self, name, post):
 
 		collection.insert_one(post)
 
