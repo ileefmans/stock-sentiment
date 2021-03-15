@@ -6,26 +6,30 @@ class ScrapeWSB:
     """
         Class to scrape r/wallstreetbets
     """
-    def __init__(self, stock_name, num_posts, num_comments, sort_type="hot", time_filter="day"):
+    def __init__(self, stock_name, num_posts, num_comments, client_id, client_secret, sort_type="hot", time_filter="day"):
         """
             Args:
 
-                stock_name (str):   Name of stock to be scraped
-                num_posts (int):    Number of posts to be scraped
-                num_comments (int): Number of comments to be scraped
-                sort_type (str):    Way to sort top posts ("hot", etc) <--- FILL IN LATER
-                time_filter(str):   Time period from which to scrape posts ("day", "week", "month")
+                stock_name (str):       Name of stock to be scraped
+                num_posts (int):        Number of posts to be scraped
+                num_comments (int):     Number of comments to be scraped
+                clinet_id (str):        Client ID for Reddit API
+                client_secret (str):    Secret Passcode for Reddit API
+                sort_type (str):        Way to sort top posts ("hot", etc) <--- FILL IN LATER
+                time_filter(str):       Time period from which to scrape posts ("day", "week", "month")
 
         """
 
         self.stock_name = stock_name
         self.num_posts = num_posts
         self.num_comments = num_comments
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.sort_type=sort_type
         self.time_filter = time_filter
 
         # Create "reddit" object
-        self.reddit = praw.Reddit(client_id=temp, client_secret=temp, user_agent='WebScraping')
+        self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
     
     def scrape(self):
         #Blank list for hottest posts and their attributes
