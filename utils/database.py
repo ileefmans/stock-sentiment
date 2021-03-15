@@ -77,7 +77,7 @@ if __name__ == "__main__":
 	database.create_collection(name)
 	# Instantiate object to scrape Reddit for desired stock
 
-	with open(IDs.yml) as file:
+	with open("IDs.yml") as file:
 			IDs = yaml.load(file, Loader=yaml.FullLoader)
 	client_id = IDs['Reddit']['client_id']
 	client_secret = IDs['Reddit']['client_secret']
