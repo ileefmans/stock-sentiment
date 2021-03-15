@@ -61,22 +61,23 @@ class Database:
 
 
 if __name__ == "__main__":
+
+	# Get name from argument parser
 	ops = get_args()
 	name = ops.stock
 
+	# Instantiate Database object
 	database = Database("RedditComments")
-	print("DONE INSTATNIATING DATABASE")
+	# Create a collection for desired stock
 	database.create_collection(name)
-	print("DONE CREATING COLLECTION")
+	# Instantiate object to scrape Reddit for desired stock
 	getdata = GetData(name)
-	database.insert_document(name, "posts",getdata.process())
+	# Insert data into database
+	database.insert_document(name, "posts", getdata.process())
 
 
-
-
-
+	# Printing for testing purposes only
 	cursor = database.db[name].find({})
-
 	count = 0
 	for i in cursor:
 		if count<10:
