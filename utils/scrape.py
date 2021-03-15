@@ -2,8 +2,21 @@ import praw
 from praw.models import MoreComments
 import pandas as pd
 
-class GetData:
+class ScrapeWSB:
+    """
+        Class to scrape r/wallstreetbets
+    """
     def __init__(self, stock_name, num_posts, num_comments, sort_type="hot", time_filter="day"):
+        """
+            Args:
+
+                stock_name (str):   Name of stock to be scraped
+                num_posts (int):    Number of posts to be scraped
+                num_comments (int): Number of comments to be scraped
+                sort_type (str):    Way to sort top posts ("hot", etc) <--- FILL IN LATER
+                time_filter(str):   Time period from which to scrape posts ("day", "week", "month")
+
+        """
 
         self.stock_name = stock_name
         self.num_posts = num_posts
