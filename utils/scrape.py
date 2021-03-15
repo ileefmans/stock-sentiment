@@ -25,7 +25,7 @@ class ScrapeWSB:
         self.time_filter = time_filter
 
         # Create "reddit" object
-        self.reddit = praw.Reddit(client_id='pjzGSwuoF7dgxA', client_secret='PIW3cZ1TiX9i5VVhr-wjdQvWT8ik1w', user_agent='WebScraping')
+        self.reddit = praw.Reddit(client_id=temp, client_secret=temp, user_agent='WebScraping')
     
     def scrape(self):
         #Blank list for hottest posts and their attributes
