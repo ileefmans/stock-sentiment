@@ -1,7 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 import argparse
-from scrape import GetData
+from scrape import ScrapeWSB
 
 
 def get_args():
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 	# Create a collection for desired stock
 	database.create_collection(name)
 	# Instantiate object to scrape Reddit for desired stock
-	getdata = GetData(name)
+	getdata = ScrapeWSB(name)
 	# Insert data into database
 	database.insert_document(name, "posts", getdata.process())
 
