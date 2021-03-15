@@ -3,9 +3,11 @@ from praw.models import MoreComments
 import pandas as pd
 
 class GetData:
-    def __init__(self, stock_name, sort_type="hot", time_filter="day"):
+    def __init__(self, stock_name, num_posts, num_comments, sort_type="hot", time_filter="day"):
 
         self.stock_name = stock_name
+        self.num_posts = num_posts
+        self.num_comments = num_comments
         self.sort_type=sort_type
         self.time_filter = time_filter
 
@@ -20,7 +22,7 @@ class GetData:
         queried_posts = self.reddit.subreddit('wallstreetbets').search(self.stock_name, 
                                                                 self.sort_type, 
                                                                 self.time_filter,
-                                                                limit=10)
+                                                                limit=self.num_posts)
 
 
 
@@ -36,20 +38,31 @@ class GetData:
         return posts
 
     def convert(self, df):
+        # Initialize dictionary
         stock = {}
         
+        # Loop through all top posts
         for i in range(len(df)):
+
+            # Extract ID
             ID = df.id[i]
+            # Create submission object to extract comments for each post
             submission = self.reddit.submission(id = ID)
             submission.comments.replace_more(limit=0)
-            comments = []
 
+            # Initialize list for commments
+            comments = []
             count = 0
+            # Loop through comments
             for top_level_comment in submission.comments:
-                if count<10:
+                # append comments to list
+                if count<self.num_comments:
                     comments.append(top_level_comment.body)
+                else:
+                    break
                 count+=1
             
+            # add meta data for each post along with all commments to dictionary
             stock["post_{}".format(i)] = {"id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
                                           "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
                                           "created": float(df.iloc[i].created), "comments": comments}
@@ -59,9 +72,6 @@ class GetData:
         return self.convert(self.scrape())
 
 
-
-# if __name__ == "__main__":
-#   getdata = GetData
         
 
 
