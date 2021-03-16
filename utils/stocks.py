@@ -14,10 +14,10 @@ class Stock:
 		# Extract IDs from yaml file
 		with open("IDs.yml") as file:
 					self.IDs = yaml.load(file, Loader=yaml.FullLoader)
-		self.api_key = IDs["Finnhub"]["api_key"]
+		self.api_key = self.IDs["Finnhub"]["api_key"]
 
 		# Set up client
-		self.finnhub_client = finnhub.Client(api_key=api_key)
+		self.finnhub_client = finnhub.Client(api_key=self.api_key)
 		self.start = int(time.mktime((datetime.datetime.now()- datetime.timedelta(days=1)).timetuple()))
 		self.end = int(time.time())
 
@@ -33,18 +33,25 @@ class Stock:
 
 
 	# Create unix timestamp
-	def create_unix_stamp(self, year, month, day hour minute, second):
+	def create_unix_stamp(self, year, month, day, hour, minute, second):
 		dt = datetime.datetime(year, month, day, hour, minute, second)
 		return int(time.mktime(dt.timetuple()))
 
 
 	def pull_data(self):
-		start = create_unix_stamp(2021, 3, 15, 0, 0, 0)
-		end = int(time.time())
 
-		res = self.finnhub_client.stock_candles('AAPL', '1', start, end)
+		res = self.finnhub_client.stock_candles('AAPL', '1', self.start, self.end)
 		df = pd.DataFrame(res)
 		df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
 
 		print(df)
+
+
+
+
+if __name__ == "__main__":
+	stock = Stock()
+	stock.set_start([2021, 3, 15, 13, 0, 0])
+	stock.set_end(current=False, date=[2021, 3, 15, 15, 0, 0])
+	stock.pull_data()
 
