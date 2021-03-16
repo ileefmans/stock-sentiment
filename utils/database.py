@@ -2,12 +2,12 @@ import pymongo
 from pymongo import MongoClient
 import argparse
 import yaml
-from scrape import ScrapeWSB
+from scrape import ScrapeWSB, Stock
 
 
 def get_args():
     parser = argparse.ArgumentParser(description="Model Options")
-    parser.add_argument("stock", type=str, help="stock searched and added to database")
+    parser.add_argument("stock_name", type=str, help="stock searched and added to database")
     # parser.add_argument("client_id", type=str, help="Client ID for Reddit API")
     # parser.add_argument("client_secret", type=str, help="Secret Passcode for Reddit API")
     return parser.parse_args()
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
 	# Get name from argument parser
 	ops = get_args()
-	name = ops.stock
+	name = ops.stock_name
 	# client_id = ops.client_id
 	# client_secret = ops.client_secret
 
@@ -76,16 +76,29 @@ if __name__ == "__main__":
 	# Create a collection for desired stock
 	database.create_collection(name)
 	# Instantiate object to scrape Reddit for desired stock
-	getdata = ScrapeWSB(name, 10, 10)
+	scrapewsb = ScrapeWSB(name, 10, 10)
+	stock = Stock()
+
+
+
 	# Insert data into database
-	database.insert_document(name, "posts", getdata.process())
+	post = scrapewsb.process()
+	prices = stock.pull_data()
+
+
+
+	
+
+	database.insert_document(name, "posts", post)
+	database.insert_document(name, "prices", prices)
 
 
 	# Printing for testing purposes only
-	cursor = database.db[name].find({})
+	cursor = database.db[name]['prices'].find({})
+	
 	count = 0
 	for i in cursor:
-		if count<10:
+		if count<1:
 			print(i)
 		count+=1
 

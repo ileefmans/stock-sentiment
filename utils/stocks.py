@@ -46,6 +46,8 @@ class Stock:
 
 		print(df)
 
+	def convert(self):
+
 
 
 

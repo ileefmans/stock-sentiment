@@ -125,6 +125,16 @@ class Stock:
         dt = datetime.datetime(year, month, day, hour, minute, second)
         return int(time.mktime(dt.timetuple()))
 
+    def convert(self, df):
+        prices = {}
+        prices['open'] = list(df.o)
+        prices['high'] = list(df.h)
+        prices['low'] = list(df.l) 
+        prices['close'] = list(df.c) 
+        prices['volume'] = list(df.v) 
+        prices['timestamp'] = list(df.t) 
+        prices['status'] = list(df.s) 
+        return prices
 
     def pull_data(self):
 
@@ -132,7 +142,11 @@ class Stock:
         df = pd.DataFrame(res)
         df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
 
-        print(df)
+        prices = self.convert(df)
+
+        return prices
+
+
         
 
 
