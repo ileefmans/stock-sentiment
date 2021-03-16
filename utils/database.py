@@ -86,9 +86,6 @@ if __name__ == "__main__":
 	
 
 
-
-	
-
 	database.insert_document(name, "posts", post)
 	
 
