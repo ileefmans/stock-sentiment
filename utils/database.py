@@ -76,13 +76,7 @@ if __name__ == "__main__":
 	# Create a collection for desired stock
 	database.create_collection(name)
 	# Instantiate object to scrape Reddit for desired stock
-
-	with open("IDs.yml") as file:
-			IDs = yaml.load(file, Loader=yaml.FullLoader)
-	client_id = IDs['Reddit']['client_id']
-	client_secret = IDs['Reddit']['client_secret']
-
-	getdata = ScrapeWSB(name, 10, 10, client_id, client_secret)
+	getdata = ScrapeWSB(name, 10, 10)
 	# Insert data into database
 	database.insert_document(name, "posts", getdata.process())
 
