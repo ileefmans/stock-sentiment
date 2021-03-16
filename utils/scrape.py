@@ -1,30 +1,35 @@
 import praw
 from praw.models import MoreComments
 import pandas as pd
+import finnhub
+import yaml
+import datetime
+import time
 
 class ScrapeWSB:
     """
         Class to scrape r/wallstreetbets
     """
-    def __init__(self, stock_name, num_posts, num_comments, client_id, client_secret, sort_type="hot", time_filter="day"):
+    def __init__(self, stock_name, num_posts, num_comments, sort_type="hot", time_filter="day"):
         """
             Args:
 
                 stock_name (str):       Name of stock to be scraped
                 num_posts (int):        Number of posts to be scraped
                 num_comments (int):     Number of comments to be scraped
-                clinet_id (str):        Client ID for Reddit API
-                client_secret (str):    Secret Passcode for Reddit API
                 sort_type (str):        Way to sort top posts ("hot", etc) <--- FILL IN LATER
                 time_filter(str):       Time period from which to scrape posts ("day", "week", "month")
 
         """
 
+        with open("IDs.yml") as file:
+            self.IDs = yaml.load(file, Loader=yaml.FullLoader)
+        self.client_id = self.IDs['Reddit']['client_id']
+        self.client_secret = IDs['Reddit']['client_secret']
+
         self.stock_name = stock_name
         self.num_posts = num_posts
         self.num_comments = num_comments
-        self.client_id = client_id
-        self.client_secret = client_secret
         self.sort_type=sort_type
         self.time_filter = time_filter
 
@@ -89,6 +94,45 @@ class ScrapeWSB:
         return self.convert(self.scrape())
 
 
+
+class Stock:
+    def __init__(self):
+
+
+        # Extract IDs from yaml file
+        with open("IDs.yml") as file:
+            self.IDs = yaml.load(file, Loader=yaml.FullLoader)
+        self.api_key = self.IDs["Finnhub"]["api_key"]
+
+        # Set up client
+        self.finnhub_client = finnhub.Client(api_key=self.api_key)
+        self.start = int(time.mktime((datetime.datetime.now()- datetime.timedelta(days=1)).timetuple()))
+        self.end = int(time.time())
+
+
+    def set_start(self, date):
+        self.start = self.create_unix_stamp(date[0], date[1], date[2], date[3], date[4], date[5])
+
+    def set_end(self, current=True, date=None):
+        if current:
+            self.end = int(time.time())
+        else:
+            self.end = self.create_unix_stamp(date[0], date[1], date[2], date[3], date[4], date[5])
+
+
+    # Create unix timestamp
+    def create_unix_stamp(self, year, month, day, hour, minute, second):
+        dt = datetime.datetime(year, month, day, hour, minute, second)
+        return int(time.mktime(dt.timetuple()))
+
+
+    def pull_data(self):
+
+        res = self.finnhub_client.stock_candles('AAPL', '1', self.start, self.end)
+        df = pd.DataFrame(res)
+        df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
+
+        print(df)
         
 
 
