@@ -25,7 +25,7 @@ class ScrapeWSB:
         with open("IDs.yml") as file:
             self.IDs = yaml.load(file, Loader=yaml.FullLoader)
         self.client_id = self.IDs['Reddit']['client_id']
-        self.client_secret = IDs['Reddit']['client_secret']
+        self.client_secret = self.IDs['Reddit']['client_secret']
 
         self.stock_name = stock_name
         self.num_posts = num_posts
