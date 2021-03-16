@@ -136,9 +136,14 @@ class Stock:
         prices['status'] = list(df.s) 
         return prices
 
-    def pull_data(self):
+    def pull_data(self, stock_name):
+        """
+            Args:
 
-        res = self.finnhub_client.stock_candles('AAPL', '1', self.start, self.end)
+                stock_name (str): Name of stock for which to pull data
+        """
+
+        res = self.finnhub_client.stock_candles(stock_name, '1', self.start, self.end)
         df = pd.DataFrame(res)
         df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
 
