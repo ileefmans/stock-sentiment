@@ -83,8 +83,9 @@ if __name__ == "__main__":
 	post = scrapewsb.process()
 	
 
+	for doc in post:
 
-	database.insert_document(name, "posts", post)
+		database.insert_document(name, "posts", doc)
 	
 
 

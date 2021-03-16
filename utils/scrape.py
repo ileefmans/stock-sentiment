@@ -61,7 +61,7 @@ class ScrapeWSB:
 
     def convert(self, df):
         # Initialize dictionary
-        stock = {}
+        stock = []
         
         # Loop through all top posts
         for i in range(len(df)):
@@ -85,9 +85,13 @@ class ScrapeWSB:
                 count+=1
             
             # add meta data for each post along with all commments to dictionary
-            stock["post_{}".format(i)] = {"id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
+            # stock["post_{}".format(i)] = {"id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
+            #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
+            #                               "created": float(df.iloc[i].created), "comments": comments}
+
+            stock.append({"_id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
                                           "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
-                                          "created": float(df.iloc[i].created), "comments": comments}
+                                          "created": float(df.iloc[i].created), "comments": comments})
         return stock
 
     def process(self):
