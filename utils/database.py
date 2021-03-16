@@ -77,24 +77,24 @@ if __name__ == "__main__":
 	database.create_collection(name)
 	# Instantiate object to scrape Reddit for desired stock
 	scrapewsb = ScrapeWSB(name, 10, 10)
-	stock = Stock()
+	
 
 
 
 	# Insert data into database
 	post = scrapewsb.process()
-	prices = stock.pull_data()
+	
 
 
 
 	
 
 	database.insert_document(name, "posts", post)
-	database.insert_document(name, "prices", prices)
+	
 
 
 	# Printing for testing purposes only
-	cursor = database.db[name]['prices'].find({})
+	cursor = database.db[name].find({})
 	
 	count = 0
 	for i in cursor:
