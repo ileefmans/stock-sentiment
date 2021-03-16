@@ -18,7 +18,7 @@ class Stock:
 
 		# Set up client
 		self.finnhub_client = finnhub.Client(api_key=api_key)
-		self.start = None
+		self.start = int(time.mktime((datetime.datetime.now()- datetime.timedelta(days=1)).timetuple()))
 		self.end = int(time.time())
 
 
