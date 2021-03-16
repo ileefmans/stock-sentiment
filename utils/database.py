@@ -8,8 +8,6 @@ from scrape import ScrapeWSB, Stock
 def get_args():
     parser = argparse.ArgumentParser(description="Model Options")
     parser.add_argument("stock_name", type=str, help="stock searched and added to database")
-    # parser.add_argument("client_id", type=str, help="Client ID for Reddit API")
-    # parser.add_argument("client_secret", type=str, help="Secret Passcode for Reddit API")
     return parser.parse_args()
 
 
