@@ -2,7 +2,7 @@ import pymongo
 from pymongo import MongoClient
 import argparse
 import yaml
-from scrape import ScrapeWSB, Stock
+from data import ScrapeWSB, Stock
 
 
 def get_args():
