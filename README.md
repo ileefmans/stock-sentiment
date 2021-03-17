@@ -9,6 +9,15 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 
 
 
+## TODO:  
+  1) Set up Travis CI  
+  2) Move from local device to AWS  
+  3) Model for deriving sentiment  
+  4) Model for predicting stock direction  
+  5) Build Web App  
+  6) Set up monitoring  
+ 
+
 ## Getting Started  
   
   **With Conda Environement**  
