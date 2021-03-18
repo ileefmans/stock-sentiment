@@ -21,7 +21,7 @@ class test_Stock(unittest.TestCase):
 
 
 	def test_convert(self):
-		self.assertEqual(utils.Stock("GME", 10, 10).convert(self.df)['open'], [1,1,1])
+		self.assertEqual(utils.Stock().convert(self.df)['open'], [1,1,1])
 
 	# def test_equal_comment_posts(self):
 	# 	self.assertEqual(len(utils.ScrapeWSB("GME", 10, 10).process()), 10)
