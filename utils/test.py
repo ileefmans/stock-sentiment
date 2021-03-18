@@ -5,11 +5,10 @@ client = MongoClient(host="localhost", port=27017)
 
 db = client["RedditComments"]
 
-db["GME"].drop()
+#db["GME"].drop()
 
 print(db.list_collection_names())
-
-# cursor = db['GME'].find({})
+print(db['GME'].find_one({'_id':0}))
 
 # count = 0
 # for i in cursor:
