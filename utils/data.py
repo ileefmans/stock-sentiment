@@ -131,6 +131,7 @@ class Stock:
 
     def convert(self, df):
         prices = {}
+        prices['_id'] = 000
         prices['open'] = list(df.o)
         prices['high'] = list(df.h)
         prices['low'] = list(df.l) 
