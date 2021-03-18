@@ -6,6 +6,20 @@ import yaml
 import datetime
 import time
 
+
+def get_keys(website):
+    with open("IDs.yml") as file:
+        IDs = yaml.load(file, Loader=yaml.FullLoader)
+    if website=="Reddit":
+        client_id = IDs['Reddit']['client_id']
+        client_secret = IDs['Reddit']['client_secret']
+        return client_id, client_secret
+    if website=="Finnhub":
+        api_key = IDs["Finnhub"]["api_key"]
+        return api_key
+
+
+
 class ScrapeWSB:
     """
         Class to scrape r/wallstreetbets
@@ -22,10 +36,10 @@ class ScrapeWSB:
 
         """
 
-        with open("IDs.yml") as file:
-            self.IDs = yaml.load(file, Loader=yaml.FullLoader)
-        self.client_id = self.IDs['Reddit']['client_id']
-        self.client_secret = self.IDs['Reddit']['client_secret']
+        # with open("IDs.yml") as file:
+        #     self.IDs = yaml.load(file, Loader=yaml.FullLoader)
+        # self.client_id = self.IDs['Reddit']['client_id']
+        # self.client_secret = self.IDs['Reddit']['client_secret']
 
         self.stock_name = stock_name
         self.num_posts = num_posts
@@ -34,13 +48,15 @@ class ScrapeWSB:
         self.time_filter = time_filter
 
         # Create "reddit" object
-        self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
+        #self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
     
     def scrape(self):
         #Blank list for hottest posts and their attributes
         posts = []
 
         # obtain most recent posts from wallstreetbets with regard to GME
+        self.client_id, self.client_secret = get_keys("Reddit")
+        self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
         queried_posts = self.reddit.subreddit('wallstreetbets').search(self.stock_name, 
                                                                 self.sort_type, 
                                                                 self.time_filter,
@@ -104,12 +120,12 @@ class Stock:
 
 
         # Extract IDs from yaml file
-        with open("IDs.yml") as file:
-            self.IDs = yaml.load(file, Loader=yaml.FullLoader)
-        self.api_key = self.IDs["Finnhub"]["api_key"]
+        # with open("IDs.yml") as file:
+        #     self.IDs = yaml.load(file, Loader=yaml.FullLoader)
+        # self.api_key = self.IDs["Finnhub"]["api_key"]
 
         # Set up client
-        self.finnhub_client = finnhub.Client(api_key=self.api_key)
+        # self.finnhub_client = finnhub.Client(api_key=self.api_key)
         self.start = int(time.mktime((datetime.datetime.now()- datetime.timedelta(days=1)).timetuple()))
         self.end = int(time.time())
 
@@ -148,6 +164,8 @@ class Stock:
                 stock_name (str): Name of stock for which to pull data
         """
 
+        self.api_key = get_keys("Finnhub")
+        self.finnhub_client = finnhub.Client(api_key=self.api_key)
         res = self.finnhub_client.stock_candles(stock_name, '1', self.start, self.end)
         df = pd.DataFrame(res)
         df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
