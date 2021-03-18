@@ -2,7 +2,7 @@ import unittest
 import utils
 import pandas as pd
 
-class test_ScrapeWSB(unittest.TestCase):
+class test_Stock(unittest.TestCase):
 
 	def setUp(self):
 		o = [1,1,1]
@@ -21,7 +21,7 @@ class test_ScrapeWSB(unittest.TestCase):
 
 
 	def test_convert(self):
-		self.assertEqual(utils.ScrapeWSB("GME", 10, 10).convert(self.df)['open'], [1,1,1])
+		self.assertEqual(utils.Stock("GME", 10, 10).convert(self.df)['open'], [1,1,1])
 
 	# def test_equal_comment_posts(self):
 	# 	self.assertEqual(len(utils.ScrapeWSB("GME", 10, 10).process()), 10)
