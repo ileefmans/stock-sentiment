@@ -50,7 +50,7 @@ class Database:
 		#collection.delete_many({})
 
 
-	def insert_document(self, collection_name, name, post):
+	def insert_document(self, collection_name, post):
 
 		self.db[collection_name].insert_one(post)
 
@@ -85,7 +85,11 @@ if __name__ == "__main__":
 
 	for doc in post:
 
-		database.insert_document(name, "posts", doc)
+		database.insert_document(name, doc)
+
+	stock = Stock()
+
+	database.insert_document(name, stock.pull_data("GME"))
 	
 
 
