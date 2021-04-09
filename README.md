@@ -1,3 +1,5 @@
+![Database](https://img.shields.io/badge/Database-MongoDB-success&?style=flat&logo=MongoDB&colog=success)
+[![Build Status](https://www.travis-ci.com/ileefmans/stock-sentiment.svg?branch=main)](https://www.travis-ci.com/ileefmans/stock-sentiment)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/ileefmans/stock-sentiment)  
@@ -10,12 +12,11 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 
 
 ## TODO:  
-  1) Set up Travis CI  
-  2) Move from local device to AWS  
-  3) Model for deriving sentiment  
-  4) Model for predicting stock direction  
-  5) Build Web App  
-  6) Set up monitoring  
+  1) Move from local device to AWS  
+  2) Model for deriving sentiment  
+  3) Model for predicting stock direction  
+  4) Build Web App  
+  5) Set up monitoring  
  
 
 ## Getting Started  
