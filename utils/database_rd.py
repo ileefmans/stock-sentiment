@@ -18,5 +18,18 @@ host = args.host
 # Establish connection and create cursor
 conn = mysql.connector.connect(user=user, password=password, host=host)
 cursor = conn.cursor()
-cursor.execute("CREATE database STOCKS")
+
+# Create Database
+cursor.execute("CREATE database STOCKSENTIMENT")
+
+#Create Table
+
+sql = """CREATE TABLE EMPLOYEE(
+   FIRST_NAME CHAR(20) NOT NULL,
+   LAST_NAME CHAR(20),
+   AGE INT,
+   SEX CHAR(1),
+   INCOME FLOAT
+)"""
+cursor.execute(sql)
 
