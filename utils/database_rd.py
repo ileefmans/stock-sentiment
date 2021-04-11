@@ -36,7 +36,24 @@ class Database:
             print("Database connection failed due to {}".format(e)) 
 
     def initialize_tables(self):
-        pass
+        sql1 = '''CREATE TABLE POSTS(
+                POST_ID INT NOT NULL,
+                STOCK_ID CHAR(20) NOT NULL,
+                TITLE CHAR(500),
+                SCORE INT,
+                NUM_COMMENTS INT
+                CREATED FLOAT
+            )'''
+
+        sql2 = '''CREATE TABLE COMMENTS(
+                COMMENT_ID INT NOT NULL,
+                STOCK_ID CHAR(20) NOT NULL,
+                COMMENT CHAR(1000)
+            )'''
+        sql3 = '''CREATE TABLE STOCKS(
+                STOCK_ID INT NOT NULL,
+                LAST_SCRAPED FLOAT
+            )'''
 
     def insert(self):
         pass
