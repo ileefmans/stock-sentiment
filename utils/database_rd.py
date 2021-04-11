@@ -1,35 +1,37 @@
 import mysql.connector
-import argparse
+#import argparse
+#import boto3
+#import sys
+#import os
+import yaml
 
 
-def get_args():
-	parser = argparse.ArgumentParser(description="Model Options")
-    parser.add_argument("user", type=str, help="mysql user")
-    parser.add_argument("password", type=str, help="mysql password")
-    parser.add_argument("--host", type=str, default='127.0.0.1', help="mysql host")
-    return parser.parse_args()
 
 
-args  = get_args()
-user = args.user
-password = args.password
-host = args.host
 
-# Establish connection and create cursor
-conn = mysql.connector.connect(user=user, password=password, host=host)
-cursor = conn.cursor()
+# Open yml to get connectivity info
+with open("IDs.yml") as file:
+    info = yaml.load(file, Loader=yaml.FullLoader)
 
-# Create Database
-cursor.execute("CREATE database STOCKSENTIMENT")
+ENDPOINT = info['MySQL']['ENDPOINT']
+PORT = info['MySQL']['PORT']
+REGION = info['MySQL']['REGION']
+USR = info['MySQL']['USR']
+DBNAME = info['MySQL']['DBNAME']
+PASSWORD = info['MySQL']['master_password']
 
-#Create Table
+# Connect to database
+try:
+    conn =  mysql.connector.connect(host=ENDPOINT, user=USR, passwd=PASSWORD)#, database=DBNAME)
+    print('connection established')
+    cur = conn.cursor()
+    cur.execute("""SELECT now()""")
+    query_results = cur.fetchall()
+    print(query_results)
+except Exception as e:
+    print("Database connection failed due to {}".format(e)) 
 
-sql = """CREATE TABLE EMPLOYEE(
-   FIRST_NAME CHAR(20) NOT NULL,
-   LAST_NAME CHAR(20),
-   AGE INT,
-   SEX CHAR(1),
-   INCOME FLOAT
-)"""
-cursor.execute(sql)
+
+
+
 
