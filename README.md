@@ -2,11 +2,12 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/ileefmans/stock-sentiment)  
+
+  
+  
+# Stock Sentiment  
 ![Cloud Computing](https://img.shields.io/badge/Cloud-AWS-orange&?style=flat&logo=Amazon-AWS&color=9cf)
-![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)
-  
-  
-# Stock Sentiment
+![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)  
 
 This application scrapes Reddit to extract sentiment for a desired stock and then factors this information into predictions about the stocks future direction.
 
