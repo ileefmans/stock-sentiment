@@ -9,27 +9,37 @@ import yaml
 
 
 
-# Open yml to get connectivity info
-with open("IDs.yml") as file:
-    info = yaml.load(file, Loader=yaml.FullLoader)
 
-ENDPOINT = info['MySQL']['ENDPOINT']
-PORT = info['MySQL']['PORT']
-REGION = info['MySQL']['REGION']
-USR = info['MySQL']['USR']
-DBNAME = info['MySQL']['DBNAME']
-PASSWORD = info['MySQL']['master_password']
+class Database:
+    def __init__(self):
 
-# Connect to database
-try:
-    conn =  mysql.connector.connect(host=ENDPOINT, user=USR, passwd=PASSWORD)#, database=DBNAME)
-    print('connection established')
-    cur = conn.cursor()
-    cur.execute("""SELECT now()""")
-    query_results = cur.fetchall()
-    print(query_results)
-except Exception as e:
-    print("Database connection failed due to {}".format(e)) 
+        # Open yml to get connectivity info
+        with open("IDs.yml") as file:
+            self.info = yaml.load(file, Loader=yaml.FullLoader)
+
+        self.ENDPOINT = self.info['MySQL']['ENDPOINT']
+        self.PORT = self.info['MySQL']['PORT']
+        self.REGION = self.info['MySQL']['REGION']
+        self.USR = self.info['MySQL']['USR']
+        self.DBNAME = self.info['MySQL']['DBNAME']
+        self.PASSWORD = self.info['MySQL']['master_password']
+
+        # Connect to database
+        try:
+            self.conn =  mysql.connector.connect(host=self.ENDPOINT, user=self.USR, passwd=self.PASSWORD)#, database=DBNAME)
+            print('connection established')
+            self.cur = conn.cursor()
+            cur.execute("""SELECT now()""")
+            query_results = cur.fetchall()
+            print(query_results)
+        except Exception as e:
+            print("Database connection failed due to {}".format(e)) 
+
+    def initialize_tables(self):
+        pass
+
+    def insert(self):
+        pass
 
 
 
