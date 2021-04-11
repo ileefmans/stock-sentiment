@@ -1,4 +1,4 @@
-![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL)
+![Database](https://img.shields.io/badge/Database-MySQL-informational)
 [![Build Status](https://www.travis-ci.com/ileefmans/stock-sentiment.svg?branch=main)](https://www.travis-ci.com/ileefmans/stock-sentiment)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)
