@@ -1,3 +1,4 @@
+![Cloud Computing](https://img.shields.io/badge/Cloud-Computing-AWS-orange&?style=flat&logo=Amazon-AWS&color=9cf)
 ![Database](https://img.shields.io/badge/Database-MySQL-informational)
 [![Build Status](https://www.travis-ci.com/ileefmans/stock-sentiment.svg?branch=main)](https://www.travis-ci.com/ileefmans/stock-sentiment)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
