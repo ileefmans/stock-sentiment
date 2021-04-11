@@ -26,37 +26,66 @@ class Database:
 
         # Connect to database
         try:
-            self.conn =  mysql.connector.connect(host=self.ENDPOINT, user=self.USR, passwd=self.PASSWORD)#, database=DBNAME)
+            self.conn =  mysql.connector.connect(host=self.ENDPOINT, user=self.USR, passwd=self.PASSWORD)#, database=self.DBNAME)
             print('connection established')
-            self.cur = conn.cursor()
-            cur.execute("""SELECT now()""")
-            query_results = cur.fetchall()
+            self.cur = self.conn.cursor()
+            self.cur.execute("""SELECT now()""")
+            query_results = self.cur.fetchall()
             print(query_results)
         except Exception as e:
             print("Database connection failed due to {}".format(e)) 
+
+    def initialize_database(self):
+        sql1 = '''CREATE DATABASE DB1'''
+        sql2 = '''USE DB1'''
+        self.cur.execute(sql1)
+        self.cur.execute(sql2)
+        return
+
+    def use_database(self, database_name):
+        sql = '''USE {}'''.format(database_name)
+        self.cur.execute(sql)
 
     def initialize_tables(self):
         sql1 = '''CREATE TABLE POSTS(
                 POST_ID INT NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
-                TITLE CHAR(500),
+                TITLE TEXT,
                 SCORE INT,
-                NUM_COMMENTS INT
+                NUM_COMMENTS INT,
                 CREATED FLOAT
             )'''
 
         sql2 = '''CREATE TABLE COMMENTS(
                 COMMENT_ID INT NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
-                COMMENT CHAR(1000)
+                COMMENT TEXT
             )'''
         sql3 = '''CREATE TABLE STOCKS(
                 STOCK_ID INT NOT NULL,
                 LAST_SCRAPED FLOAT
             )'''
 
+        self.cur.execute(sql1)
+        self.cur.execute(sql2)
+        self.cur.execute(sql3)
+
+        return
+
     def insert(self):
         pass
+
+    def query(self, sql):
+        self.cur.execute(sql)
+        return self.cur.fetchall()
+
+
+
+if __name__=='__main__':
+    db = Database()
+    db.use_database('DB1')
+    #db.initialize_tables()
+    print(db.query('show tables;'))
 
 
 
