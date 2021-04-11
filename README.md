@@ -1,9 +1,9 @@
-![Cloud Computing](https://img.shields.io/badge/Cloud-AWS-orange&?style=flat&logo=Amazon-AWS&color=9cf)
-![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)
 [![Build Status](https://www.travis-ci.com/ileefmans/stock-sentiment.svg?branch=main)](https://www.travis-ci.com/ileefmans/stock-sentiment)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ileefmans/stock-sentiment)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ileefmans/stock-sentiment.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/ileefmans/stock-sentiment)  
+![Cloud Computing](https://img.shields.io/badge/Cloud-AWS-orange&?style=flat&logo=Amazon-AWS&color=9cf)
+![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)
   
   
 # Stock Sentiment
