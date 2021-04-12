@@ -5,6 +5,7 @@ import finnhub
 import yaml
 import datetime
 import time
+from database_rd import Database
 
 
 def get_keys(website):
@@ -70,8 +71,13 @@ class ScrapeWSB:
             posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
                         post.selftext, post.created])
 
+            db = Database()
+            db.use_database('DB1')
+            db.insert_posts([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
+                        post.selftext, post.created])
+
         # Create Dataframe for top 10 hottest posts
-        posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
+        posts = pd.DataFrame(posts,columns=['POST_ID ', 'STOCK_ID', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
 
         return posts
 
