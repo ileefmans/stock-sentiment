@@ -67,11 +67,11 @@ class ScrapeWSB:
         # Loop through 10 GME posts and print title
         for post in queried_posts:
             # append post attributes to list
-            posts.append([post.title, post.score, post.id, post.subreddit, post.url, post.num_comments, 
+            posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
                         post.selftext, post.created])
 
         # Create Dataframe for top 10 hottest posts
-        posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'subreddit', 'url', 'num_comments', 'body', 'created'])
+        posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
 
         return posts
 
