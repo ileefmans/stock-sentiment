@@ -4,6 +4,7 @@ import mysql.connector
 #import sys
 #import os
 import yaml
+from pandas.io import sql
 
 
 
@@ -52,7 +53,10 @@ class Database:
                 STOCK_ID CHAR(20) NOT NULL,
                 TITLE TEXT,
                 SCORE INT,
+                SUBREDDIT CHAR(20),
+                URL CHAR(50),
                 NUM_COMMENTS INT,
+                BODY TEXT,
                 CREATED FLOAT
             )'''
 
@@ -72,8 +76,10 @@ class Database:
 
         return
 
-    def insert(self):
-        pass
+    def insert(self, entry, table):
+        
+        
+
 
     def query(self, sql):
         self.cur.execute(sql)
