@@ -76,9 +76,12 @@ class Database:
 
         return
 
-    def insert(self, entry, table):
+    def insert_posts(self, entry):
+        sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
+                VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {})'''.format(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8])
         
-        
+        self.cur.execute(sql)
+        return
 
 
     def query(self, sql):
