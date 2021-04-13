@@ -49,7 +49,7 @@ class Database:
 
     def initialize_tables(self):
         sql1 = '''CREATE TABLE POSTS(
-                POST_ID INT NOT NULL,
+                POST_ID CHAR(20) NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
                 TITLE CHAR(100),
                 SCORE INT,
@@ -61,7 +61,8 @@ class Database:
             )'''
 
         sql2 = '''CREATE TABLE COMMENTS(
-                COMMENT_ID INT NOT NULL,
+                COMMENT_ID CHAR(20) NOT NULL,
+                POST_ID CHAR(20) NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
                 COMMENT TEXT
             )'''
@@ -84,6 +85,14 @@ class Database:
         self.conn.commit()
         return
 
+    def insert_comments(self, entry):
+        sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
+                VALUES (%s, %s, %s, %s);'''
+
+        self. cur.execute(sql, (entry[0], entry[1], entry[2], entry[3]))
+        self.conn.commit()
+        return
+
 
     def query(self, sql):
         self.cur.execute(sql)
@@ -101,9 +110,14 @@ if __name__=='__main__':
     db.use_database('DB1')
     #db.initialize_tables()
     
+    # db.drop_table('COMMENTS')
+    # db.drop_table("POSTS")
+    # db.drop_table("STOCKS")
+    # db.initialize_tables()
     print(db.query('show tables;'))
 
     print(db.query('''SELECT * FROM POSTS ;'''))
+    print(db.query('''SELECT * FROM COMMENTS ;'''))
 
 
 
