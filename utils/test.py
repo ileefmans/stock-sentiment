@@ -13,7 +13,8 @@ from data import ScrapeWSB
 # print(stock.pull_data("AMC"))
 
 scrapewsb = ScrapeWSB('GME', 10, 10)
-print(scrapewsb.process()[0].keys())
+scrapewsb.scrape()
+print("DONE")
 
 
 
