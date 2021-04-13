@@ -51,7 +51,7 @@ class Database:
         sql1 = '''CREATE TABLE POSTS(
                 POST_ID INT NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
-                TITLE TEXT,
+                TITLE CHAR(100),
                 SCORE INT,
                 SUBREDDIT CHAR(20),
                 URL CHAR(50),
@@ -78,9 +78,10 @@ class Database:
 
     def insert_posts(self, entry):
         sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
-                VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {})'''.format(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8])
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
         
-        self.cur.execute(sql)
+        self.cur.execute(sql, (entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8]))
+        self.conn.commit()
         return
 
 
@@ -88,13 +89,22 @@ class Database:
         self.cur.execute(sql)
         return self.cur.fetchall()
 
+    def drop_table(self, table_name):
+        sql = '''DROP TABLE {} ;'''.format(table_name)
+        self.cur.execute(sql)
+        return
+
 
 
 if __name__=='__main__':
     db = Database()
     db.use_database('DB1')
     #db.initialize_tables()
+    
     print(db.query('show tables;'))
+
+    print(db.query('''SELECT * FROM POSTS ;'''))
+
 
 
 
