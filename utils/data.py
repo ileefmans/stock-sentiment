@@ -66,14 +66,16 @@ class ScrapeWSB:
 
 
         # Loop through 10 GME posts and print title
+        db = Database()
+        db.use_database('DB1')
         for post in queried_posts:
             # append post attributes to list
             posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
                         post.selftext, post.created])
 
-            db = Database()
-            db.use_database('DB1')
-            db.insert_posts([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
+
+
+            db.insert_posts([post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                         post.selftext, post.created])
 
         # Create Dataframe for top 10 hottest posts
