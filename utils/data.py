@@ -69,6 +69,7 @@ class ScrapeWSB:
         db = Database()
         db.use_database('DB1')
         for post in queried_posts:
+            
             # append post attributes to list
             posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
                         post.selftext, post.created])
@@ -79,7 +80,7 @@ class ScrapeWSB:
                         post.selftext, post.created])
 
         # Create Dataframe for top 10 hottest posts
-        posts = pd.DataFrame(posts,columns=['POST_ID ', 'STOCK_ID', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
+        posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
 
         return posts
 
@@ -89,13 +90,18 @@ class ScrapeWSB:
         
         # Loop through all top posts
         for i in range(len(df)):
-
+            
             # Extract ID
-            ID = df.id[i]
+            ID = df.post_id[i]
             # Create submission object to extract comments for each post
             submission = self.reddit.submission(id = ID)
             submission.comments.replace_more(limit=0)
 
+
+
+
+            db = Database()
+            db.use_database('DB1')
             # Initialize list for commments
             comments = []
             count = 0
@@ -104,6 +110,10 @@ class ScrapeWSB:
                 # append comments to list
                 if count<self.num_comments:
                     comments.append(top_level_comment.body)
+
+
+                    db.insert_comments([top_level_comment.id, ID, self.stock_name, top_level_comment.body])
+
                 else:
                     break
                 count+=1
@@ -113,7 +123,7 @@ class ScrapeWSB:
             #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
             #                               "created": float(df.iloc[i].created), "comments": comments}
 
-            stock.append({"_id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
+            stock.append({"_id": df.iloc[i].post_id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
                                           "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
                                           "created": float(df.iloc[i].created), "comments": comments})
         return stock
