@@ -5,7 +5,7 @@ import finnhub
 import yaml
 import datetime
 import time
-from database import Database
+from database_rd import Database
 
 
 def get_keys(website):
