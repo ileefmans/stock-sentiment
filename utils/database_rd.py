@@ -5,7 +5,7 @@ import mysql.connector
 #import os
 import yaml
 from pandas.io import sql
-import time
+import datetime
 
 
 
