@@ -5,6 +5,7 @@ import mysql.connector
 #import os
 import yaml
 from pandas.io import sql
+import time
 
 
 
@@ -68,7 +69,7 @@ class Database:
             )'''
         sql3 = '''CREATE TABLE STOCKS(
                 STOCK_ID INT NOT NULL,
-                LAST_SCRAPED FLOAT
+                LAST_SCRAPED DATETIME
             )'''
 
         self.cur.execute(sql1)
@@ -90,6 +91,14 @@ class Database:
                 VALUES (%s, %s, %s, %s);'''
 
         self. cur.execute(sql, (entry[0], entry[1], entry[2], entry[3]))
+        self.conn.commit()
+        return
+
+    def insert_stocks(self, stock_id):
+        sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
+                VALUES (%s, NOW());'''
+
+        self.cur.execute(sql, (stock_id))
         self.conn.commit()
         return
 
