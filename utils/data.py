@@ -137,13 +137,6 @@ class Stock:
     def __init__(self):
 
 
-        # Extract IDs from yaml file
-        # with open("IDs.yml") as file:
-        #     self.IDs = yaml.load(file, Loader=yaml.FullLoader)
-        # self.api_key = self.IDs["Finnhub"]["api_key"]
-
-        # Set up client
-        # self.finnhub_client = finnhub.Client(api_key=self.api_key)
         self.start = int(time.mktime((datetime.datetime.now()- datetime.timedelta(days=1)).timetuple()))
         self.end = int(time.time())
 
