@@ -97,9 +97,6 @@ class ScrapeWSB:
             submission = self.reddit.submission(id = ID)
             submission.comments.replace_more(limit=0)
 
-
-
-
             db = Database()
             db.use_database('DB1')
             # Initialize list for commments
