@@ -136,3 +136,6 @@ dmypy.json
 commands.txt
 projectoutline.pages
 IDs.yml
+database_rd.py
+database.py
+stocks.py
