@@ -199,6 +199,9 @@ class ScrapeWSB:
         # Initialize dictionary
         stock = []
         
+
+        db = Database()
+        db.use_database('DB1')
         # Loop through all top posts
         for i in range(len(df)):
             
@@ -209,8 +212,6 @@ class ScrapeWSB:
             submission = self.reddit.submission(id = ID)
             submission.comments.replace_more(limit=0)
 
-            db = Database()
-            db.use_database('DB1')
             # Initialize list for commments
             comments = []
             count = 0
