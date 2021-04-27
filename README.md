@@ -20,9 +20,8 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   4) Build Web App  
   5) Set up monitoring  
  
-## SMALL TODO:    
-  1) Move initialization of Database outside loop in convert method  
-  2) Combine *insert_posts* and *insert_comments*   
+## SMALL TODO:      
+  1) Combine *insert_posts* and *insert_comments*   
   
 ## Getting Started  
   
