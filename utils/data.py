@@ -302,12 +302,11 @@ class Stock:
 if __name__=='__main__':
     db = Database()
     db.use_database('DB1')
-    #db.initialize_tables()
+    # db.initialize_tables()
     
     # db.drop_table('COMMENTS')
     # db.drop_table("POSTS")
     # db.drop_table("STOCKS")
-    # db.initialize_tables()
     print(db.query('show tables;'))
 
     # scrapewsb = ScrapeWSB('GME', 10, 10)
