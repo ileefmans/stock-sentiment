@@ -309,6 +309,11 @@ if __name__=='__main__':
     # db.initialize_tables()
     print(db.query('show tables;'))
 
+    # scrapewsb = ScrapeWSB('GME', 10, 10)
+    # df = scrapewsb.scrape()
+    # scrapewsb.convert(df)
+    # print("DONE")
+
     print(db.query('''SELECT * FROM POSTS ;'''))
     print(db.query('''SELECT * FROM COMMENTS ;'''))
         
