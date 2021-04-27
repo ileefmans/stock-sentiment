@@ -175,6 +175,7 @@ class ScrapeWSB:
         # Loop through 10 GME posts and print title
         db = Database()
         db.use_database('DB1')
+        post_id_list = []
         for post in queried_posts:
             
             # append post attributes to list
@@ -186,10 +187,13 @@ class ScrapeWSB:
             db.insert_posts([post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                         post.selftext, post.created])
 
+            post_id_list.append(post.id)
+
         # Create Dataframe for top 10 hottest posts
         posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
 
-        return posts
+        
+        return post_id_list
 
     def convert(self, df):
         # Initialize dictionary
@@ -199,7 +203,8 @@ class ScrapeWSB:
         for i in range(len(df)):
             
             # Extract ID
-            ID = df.post_id[i]
+            ID = df[i]
+            #ID = df.post_id[i]
             # Create submission object to extract comments for each post
             submission = self.reddit.submission(id = ID)
             submission.comments.replace_more(limit=0)
@@ -227,13 +232,14 @@ class ScrapeWSB:
             #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
             #                               "created": float(df.iloc[i].created), "comments": comments}
 
-            stock.append({"_id": df.iloc[i].post_id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
-                                          "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
-                                          "created": float(df.iloc[i].created), "comments": comments})
-        return stock
+            # stock.append({"_id": df.iloc[i].post_id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
+            #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
+            #                               "created": float(df.iloc[i].created), "comments": comments})
+        return #stock
 
     def process(self):
-        return self.convert(self.scrape())
+        self.convert(self.scrape())
+        return
 
 
 
