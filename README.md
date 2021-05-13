@@ -22,6 +22,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
  
 ## SMALL TODO:      
   1) Combine *insert_posts* and *insert_comments*   
+  2) Insert into Stock table
   
 ## Getting Started  
   
