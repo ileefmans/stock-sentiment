@@ -102,6 +102,37 @@ class Database:
         return
 
 
+    def insert(self, table, data):
+        if table == 'POSTS':
+            sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+        
+            self.cur.execute(sql, (entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8]))
+            self.conn.commit()
+            return
+        
+        elif table == 'COMMENTS':
+            sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
+                VALUES (%s, %s, %s, %s);'''
+
+            self. cur.execute(sql, (entry[0], entry[1], entry[2], entry[3]))
+            self.conn.commit()
+            return
+
+        elif table == 'STOCKS':
+            sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
+                VALUES (%s, NOW());'''
+
+            self.cur.execute(sql, (stock_id))
+            self.conn.commit()
+            return
+
+        else:
+            raise Exception("Only 'POSTS', 'COMMENTS', or 'STOCKS' valid arguments for 'table'")
+
+
+
+
     def query(self, sql):
         self.cur.execute(sql)
         return self.cur.fetchall()
@@ -184,7 +215,7 @@ class ScrapeWSB:
 
 
 
-            db.insert_posts([post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
+            db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                         post.selftext, post.created])
 
             post_id_list.append(post.id)
@@ -222,7 +253,7 @@ class ScrapeWSB:
                     comments.append(top_level_comment.body)
 
 
-                    db.insert_comments([top_level_comment.id, ID, self.stock_name, top_level_comment.body])
+                    db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
 
                 else:
                     break
