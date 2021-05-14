@@ -8,8 +8,6 @@ import yaml
 import datetime
 import time
 from tqdm import tqdm
-#from database_rd import Database
-
 
 
 class Database:
@@ -78,31 +76,6 @@ class Database:
 
         return
 
-    def insert_posts(self, entry):
-        sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
-        
-        self.cur.execute(sql, (entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8]))
-        self.conn.commit()
-        return
-
-    def insert_comments(self, entry):
-        sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
-                VALUES (%s, %s, %s, %s);'''
-
-        self. cur.execute(sql, (entry[0], entry[1], entry[2], entry[3]))
-        self.conn.commit()
-        return
-
-    def insert_stocks(self, stock_id):
-        sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
-                VALUES (%s, NOW());'''
-
-        self.cur.execute(sql, (stock_id))
-        self.conn.commit()
-        return
-
-
     def insert(self, table, data):
         if table == 'POSTS':
             sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
@@ -132,8 +105,6 @@ class Database:
             raise Exception("Only 'POSTS', 'COMMENTS', or 'STOCKS' valid arguments for 'table'")
 
 
-
-
     def query(self, sql):
         self.cur.execute(sql)
         return self.cur.fetchall()
@@ -142,9 +113,6 @@ class Database:
         sql = '''DROP TABLE {} ;'''.format(table_name)
         self.cur.execute(sql)
         return
-
-
-
 
 
 def get_keys(website):
@@ -175,11 +143,7 @@ class ScrapeWSB:
                 time_filter(str):       Time period from which to scrape posts ("day", "week", "month")
 
         """
-
-        # with open("IDs.yml") as file:
-        #     self.IDs = yaml.load(file, Loader=yaml.FullLoader)
-        # self.client_id = self.IDs['Reddit']['client_id']
-        # self.client_secret = self.IDs['Reddit']['client_secret']
+        
 
         self.stock_name = stock_name
         self.num_posts = num_posts
@@ -258,17 +222,8 @@ class ScrapeWSB:
 
                 else:
                     break
-                count+=1
-            
-            # add meta data for each post along with all commments to dictionary
-            # stock["post_{}".format(i)] = {"id": df.iloc[i].id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
-            #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
-            #                               "created": float(df.iloc[i].created), "comments": comments}
-
-            # stock.append({"_id": df.iloc[i].post_id, "title": df.iloc[i].title, "score": int(df.iloc[i].score),
-            #                               "num_comments": int(df.iloc[i].num_comments), "url": df.iloc[i].url, 
-            #                               "created": float(df.iloc[i].created), "comments": comments})
-        return #stock
+                count+=1   
+        return 
 
     def process(self):
         self.convert(self.scrape())
