@@ -7,6 +7,7 @@ import finnhub
 import yaml
 import datetime
 import time
+from tqdm import tqdm
 #from database_rd import Database
 
 
@@ -107,7 +108,7 @@ class Database:
             sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
         
-            self.cur.execute(sql, (entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8]))
+            self.cur.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
             self.conn.commit()
             return
         
@@ -115,7 +116,7 @@ class Database:
             sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
                 VALUES (%s, %s, %s, %s);'''
 
-            self. cur.execute(sql, (entry[0], entry[1], entry[2], entry[3]))
+            self. cur.execute(sql, (data[0], data[1], data[2], data[3]))
             self.conn.commit()
             return
 
@@ -123,7 +124,7 @@ class Database:
             sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
                 VALUES (%s, NOW());'''
 
-            self.cur.execute(sql, (stock_id))
+            self.cur.execute(sql, (data))
             self.conn.commit()
             return
 
@@ -234,7 +235,7 @@ class ScrapeWSB:
         db = Database()
         db.use_database('DB1')
         # Loop through all top posts
-        for i in range(len(df)):
+        for i in tqdm(range(len(df))):
             
             # Extract ID
             ID = df[i]
@@ -333,7 +334,7 @@ class Stock:
 if __name__=='__main__':
     db = Database()
     db.use_database('DB1')
-    # db.initialize_tables()
+    #db.initialize_tables()
     
     # db.drop_table('COMMENTS')
     # db.drop_table("POSTS")
