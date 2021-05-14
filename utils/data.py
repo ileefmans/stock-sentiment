@@ -66,8 +66,8 @@ class Database:
                 COMMENT TEXT
             )'''
         sql3 = '''CREATE TABLE STOCKS(
-                STOCK_ID INT NOT NULL,
-                LAST_SCRAPED DATETIME
+                STOCK_ID CHAR(20) NOT NULL,
+                LAST_SCRAPED DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
             )'''
 
         self.cur.execute(sql1)
@@ -94,10 +94,13 @@ class Database:
             return
 
         elif table == 'STOCKS':
-            sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
-                VALUES (%s, NOW());'''
+            # sql = '''INSERT INTO STOCKS(STOCK_ID, LAST_SCRAPED)
+            #     VALUES (%s, NOW());'''
 
-            self.cur.execute(sql, (data))
+            sql = '''INSERT INTO STOCKS(STOCK_ID)
+                VALUES('{}');'''.format(data)
+
+            self.cur.execute(sql)
             self.conn.commit()
             return
 
@@ -143,7 +146,7 @@ class ScrapeWSB:
                 time_filter(str):       Time period from which to scrape posts ("day", "week", "month")
 
         """
-        
+
 
         self.stock_name = stock_name
         self.num_posts = num_posts
@@ -222,7 +225,8 @@ class ScrapeWSB:
 
                 else:
                     break
-                count+=1   
+                count+=1  
+        db.insert('STOCKS', self.stock_name) 
         return 
 
     def process(self):
@@ -289,7 +293,7 @@ class Stock:
 if __name__=='__main__':
     db = Database()
     db.use_database('DB1')
-    #db.initialize_tables()
+    # db.initialize_tables()
     
     # db.drop_table('COMMENTS')
     # db.drop_table("POSTS")
@@ -301,8 +305,9 @@ if __name__=='__main__':
     # scrapewsb.convert(df)
     # print("DONE")
 
-    print(db.query('''SELECT * FROM POSTS ;'''))
-    print(db.query('''SELECT * FROM COMMENTS ;'''))
+    # print(db.query('''SELECT * FROM POSTS ;'''))
+    #print(db.query('''SELECT STOCK_ID FROM COMMENTS ;'''), '\n \n \n \n')
+    print(db.query('''SELECT * FROM STOCKS ;'''))
         
 
 
