@@ -4,11 +4,12 @@ import transformers
 from transformers import BertTokenizer
 
 
+
+
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, max_len):
         self.max_len = max_len
-        self.PRE_TRAINED_MODEL_NAME = 'bert-base-cased'
-        self.tokenizer = BertTokenizer.from_pretrained(self.PRE_TRAINED_MODEL_NAME)
+        self.tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
         self.db = Database()
         self.db.use_database('DB1')
         self.indexes = self.db.query('''SELECT POST_ID FROM POSTS;''')
