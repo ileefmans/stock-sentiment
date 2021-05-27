@@ -5,4 +5,5 @@ pyyaml==5.4.1
 finnhub-python==2.4.0
 mysql-connector-python==8.0.23
 tqdm==4.60.0
+transformers==4.6.1
 #boto3==1.17.48
