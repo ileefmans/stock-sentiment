@@ -21,9 +21,8 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   5) Set up monitoring  
  
 ## SMALL TODO:        
-  1) Make sure to check if stock already exists before editing STOCK table  
-  2) Update dataloader to use both POSTS and COMMENTS  
-  3) Write training script    
+  1) Make sure to check if stock already exists before editing STOCK table    
+  2) Write training script    
    
   
 ## Getting Started  
