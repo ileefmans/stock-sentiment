@@ -14,7 +14,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 
 
 ## TODO:  
-  1) Move from local device to AWS 🏼    
+  1) Move from local device to AWS     
   2) Model for deriving sentiment 👈 
   3) Model for predicting stock direction  
   4) Build Web App  
