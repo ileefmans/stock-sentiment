@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from datahelper import Dataset, get_indices
+from datahelper import PostDataset, CommentDataset, get_indices
 from models import SentimentModel
 import yaml
 
@@ -38,17 +38,29 @@ class RunInference:
 
 		self.indices = get_indices(self.stock_id, inference=True)
 
-		self.data = Dataset(max_len, self.indices['post_ids'], self.indices['comment_ids'])
+		self.post_data = PostDataset(self.config['embedding_max_len'], 
+									 self.indices['post_ids']
+									 )
+		self.comment_data = CommentDataset(self.config['embedding_max_len'], 
+										   self.indices['comment_ids']
+										   )
 
-		self.dataloader = DataLoader(dataset=self.data, 
+		self.post_dataloader = DataLoader(dataset=self.post_data, 
+									 batch_size=self.config['batch_size'], 
+									 num_workers=self.config['num_workers'],
+									 shuffle=self.config['shuffle']
+									 )
+		self.comment_dataloader = DataLoader(dataset=self.comment_data, 
 									 batch_size=self.config['batch_size'], 
 									 num_workers=self.config['num_workers'],
 									 shuffle=self.config['shuffle']
 									 )
 
-
-
-
-
 		
+
+
+
+
+
+
 
