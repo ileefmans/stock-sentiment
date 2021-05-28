@@ -1,4 +1,5 @@
 Training:
+  embedding_max_len: 200
   model: pretrained
   batch_size: 25
   num_workers: 0
@@ -7,6 +8,7 @@ Training:
 
 
 Inference:
+  embedding_max_len: 200
   model: pretrained
   batch_size: 25
   num_workers: 0
