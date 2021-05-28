@@ -1,0 +1,13 @@
+Training:
+  model: pretrained
+  batch_size: 25
+  num_workers: 0
+  shuffle: True
+  epochs: 10
+
+
+Inference:
+  model: pretrained
+  batch_size: 25
+  num_workers: 0
+  shuffle: True
