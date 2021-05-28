@@ -4,6 +4,27 @@ import transformers
 from transformers import BertTokenizer
 
 
+def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0):
+	if not val_set:
+		if not (0<=train<=1):
+			raise Exception("Argument 'train' must be between 0 and 1")
+		if not (0<=test<=1):
+			raise Exception("Argument 'test' must be between 0 and 1")
+		if train+test!=1:
+			raise Exception("Arguments 'train' and 'test' must sum to 1")
+	else:
+		if val==0:
+			raise Exception("If argument 'val_set' is True 'val must be a positive value less than 1")
+		if not (0<=test<=1):
+			raise Exception("Argument 'test' must be between 0 and 1")
+		if train+test!=1:
+			raise Exception("Arguments 'train' and 'test' must sum to 1")
+		if not (0<val<=1):
+			raise Exception("Argument 'val' must be between 0 and 1")
+		if train+val+test!=1:
+			raise Exception("Arguments 'train', 'test', and 'val' must sum to 1")
+
+	
 
 
 class Dataset(torch.utils.data.Dataset):
@@ -55,4 +76,4 @@ class Dataset(torch.utils.data.Dataset):
 
 
 
-            
+
