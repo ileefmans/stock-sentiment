@@ -5,7 +5,16 @@ from transformers import BertTokenizer
 from sklearn.model_selection import train_test_split
 
 
-def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0):
+def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0, inference=False):
+	if inference:
+		db = Database()
+		db.use_database('DB1')
+		post_ids = db.query("SELECT POST_ID FROM POSTS WHERE STOCK_ID='{}'".format(stock_id))
+		comment_ids = db.query("SELECT COMMENT_ID FROM COMMENTS WHERE STOCK_ID='{}'".format(stock_id))
+
+		return {'post_ids': post_ids,
+				'comment_ids': comment_ids}
+
 	if not val_set:
 		if not (0<=train<=1):
 			raise Exception("Argument 'train' must be between 0 and 1")
