@@ -11,6 +11,6 @@ class SentimentModel(nn.Module):
 
 		self.bert = BertForSequenceClassification.from_pretrained('bert-base-cased')
 
-	def forward(self, x):
+	def forward(self, input_ids, attention_masks):
 
-		return self.bert(x)
+		return self.bert(input_ids, attention_masks)
