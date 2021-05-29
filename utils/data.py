@@ -46,6 +46,33 @@ class Database:
         sql = '''USE {}'''.format(database_name)
         self.cur.execute(sql)
 
+    def initialize_training_table(self):
+        sql1 = '''CREATE TABLE LABELED_POSTS(
+                POST_ID CHAR(20) NOT NULL,
+                STOCK_ID CHAR(20) NOT NULL,
+                TITLE CHAR(100),
+                SCORE INT,
+                SUBREDDIT CHAR(20),
+                URL CHAR(50),
+                NUM_COMMENTS INT,
+                BODY TEXT,
+                CREATED FLOAT,
+                LABEL INT
+            )'''
+
+        sql2 = '''CREATE TABLE LABELED_COMMENTS(
+                COMMENT_ID CHAR(20) NOT NULL,
+                POST_ID CHAR(20) NOT NULL,
+                STOCK_ID CHAR(20) NOT NULL,
+                COMMENT TEXT,
+                LABEL INT
+            )'''
+
+        self.cur.execute(sql1)
+        self.cur.execute(sql2)
+
+
+
     def initialize_tables(self):
         sql1 = '''CREATE TABLE POSTS(
                 POST_ID CHAR(20) NOT NULL,
@@ -104,6 +131,22 @@ class Database:
             self.conn.commit()
             return
 
+        elif table == 'LABELED_POSTS':
+            sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+        
+            self.cur.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
+            self.conn.commit()
+            return
+
+        elif table == 'LABELED_COMMENTS':
+            sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
+                VALUES (%s, %s, %s, %s);'''
+
+            self. cur.execute(sql, (data[0], data[1], data[2], data[3]))
+            self.conn.commit()
+            return
+
         else:
             raise Exception("Only 'POSTS', 'COMMENTS', or 'STOCKS' valid arguments for 'table'")
 
@@ -157,7 +200,7 @@ class ScrapeWSB:
         # Create "reddit" object
         #self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
     
-    def scrape(self):
+    def scrape(self, training=False):
         #Blank list for hottest posts and their attributes
         posts = []
 
@@ -182,9 +225,12 @@ class ScrapeWSB:
                         post.selftext, post.created])
 
 
-
-            db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
-                        post.selftext, post.created])
+            if not training:
+                db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
+                            post.selftext, post.created])
+            else:
+                db.insert('LABELED_POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
+                            post.selftext, post.created])
 
             post_id_list.append(post.id)
 
@@ -194,7 +240,7 @@ class ScrapeWSB:
         
         return post_id_list
 
-    def convert(self, df):
+    def convert(self, df, training=False):
         # Initialize dictionary
         stock = []
         
@@ -220,13 +266,16 @@ class ScrapeWSB:
                 if count<self.num_comments:
                     comments.append(top_level_comment.body)
 
-
-                    db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
+                    if not training:
+                        db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
+                    else:
+                        db.insert('LABELED_COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
 
                 else:
                     break
-                count+=1  
-        db.insert('STOCKS', self.stock_name) 
+                count+=1 
+        if not training: 
+            db.insert('STOCKS', self.stock_name) 
         return 
 
     def process(self):
