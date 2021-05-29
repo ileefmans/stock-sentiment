@@ -46,25 +46,6 @@ class Database:
         sql = '''USE {}'''.format(database_name)
         self.cur.execute(sql)
 
-    def initialize_training_tables(self):
-        sql1 = '''CREATE TABLE LABELED_POSTS(
-                POST_ID CHAR(20) NOT NULL,
-                TARGET INT DEFAULT NULL,
-                TITLE CHAR(100)
-            )'''
-
-        sql2 = '''CREATE TABLE LABELED_COMMENTS(
-                COMMENT_ID CHAR(20) NOT NULL,
-                POST_ID CHAR(20) NOT NULL,
-                TARGET INT DEFAULT NULL,
-                COMMENT TEXT
-            )'''
-
-        self.cur.execute(sql1)
-        self.cur.execute(sql2)
-
-
-
     def initialize_tables(self):
         sql1 = '''CREATE TABLE POSTS(
                 POST_ID CHAR(20) NOT NULL,
@@ -125,30 +106,16 @@ class Database:
             self.conn.commit()
             return
 
-        elif table == 'LABELED_POSTS':
-            sql = "INSERT INTO POSTS (POST_ID, TITLE) VALUES (%s, %s);"
-        
-            self.cur.execute(sql, (data[0], data[1]))
-            self.conn.commit()
-            return
-
-        elif table == 'LABELED_COMMENTS':
-            sql = "INSERT INTO COMMENTS(COMMENT_ID, POST_ID, COMMENT) VALUES (%s, %s, %s);"
-
-            self.cur.execute(sql, (data[0], data[1], data[2]))
-            self.conn.commit()
-            return
-
         else:
-            raise Exception("Only 'POSTS', 'COMMENTS', 'STOCKS', 'LABELED_POSTS', or 'LABELED_COMMENTS' valid arguments for 'table'")
+            raise Exception("Only 'POSTS', 'COMMENTS' or 'STOCKS' valid arguments for 'table'")
 
     def label(self, table_name, ID, label):
-        if table_name=='LABELED_POSTS':
-            sql = "UPDATE LABELED_POSTS SET LABEL={} WHERE POST_ID='{}';".format(label, ID)
-        elif table_name=='LABELED_COMMENTS':
-            sql = "UPDATE LABELED_COMMENTS SET LABEL={} WHERE COMMENT_ID='{}';".format(label, ID)
+        if table_name=='POSTS':
+            sql = "UPDATE POSTS SET TARGET={} WHERE POST_ID='{}';".format(label, ID)
+        elif table_name=='COMMENTS':
+            sql = "UPDATE COMMENTS SET TARGET={} WHERE COMMENT_ID='{}';".format(label, ID)
         else:
-            raise Exception("Only 'LABELED_POSTS' or 'LABELED_COMMENTS' valid arguments for 'table_name'")
+            raise Exception("Only 'POSTS' or 'COMMENTS' valid arguments for 'table_name'")
         self.cur.execute(sql)
         self.conn.commit()
         return
@@ -202,7 +169,7 @@ class ScrapeWSB:
         # Create "reddit" object
         #self.reddit = praw.Reddit(client_id=self.client_id, client_secret=self.client_secret, user_agent='WebScraping')
     
-    def scrape(self, training=False):
+    def scrape(self):
         #Blank list for hottest posts and their attributes
         posts = []
 
@@ -227,11 +194,9 @@ class ScrapeWSB:
                         post.selftext, post.created])
 
 
-            if not training:
-                db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
+            
+            db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                             post.selftext, -1, post.created])
-            else:
-                db.insert('LABELED_POSTS', [post.id, post.title])
                 
 
             post_id_list.append(post.id)
@@ -268,16 +233,13 @@ class ScrapeWSB:
                 if count<self.num_comments:
                     comments.append(top_level_comment.body)
 
-                    if not training:
-                        db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, -1, top_level_comment.body])
-                    else:
-                        db.insert('LABELED_COMMENTS', [top_level_comment.id, ID, top_level_comment.body])
+                    db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, -1, top_level_comment.body])
 
                 else:
                     break
                 count+=1 
-        if not training: 
-            db.insert('STOCKS', self.stock_name) 
+
+        db.insert('STOCKS', self.stock_name) 
         return 
 
     def process(self):
