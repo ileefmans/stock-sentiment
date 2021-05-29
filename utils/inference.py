@@ -34,7 +34,7 @@ class RunInference:
 		self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 		
 		if self.config['model']=='pretrained':
-			self.model = SentimentModel.to(self.device)
+			self.model = SentimentModel().to(self.device)
 
 		self.stock_id = stock_id
 
@@ -65,15 +65,22 @@ class RunInference:
 
 			total_probs = torch.zeros([2])
 			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
-				input_ids = post['post_input_ids'].to(device)
-				attention_masks = post['post_attention_mask'].to(device)
+				input_ids = post['post_input_ids'].to(self.device)
+				attention_masks = post['post_attention_mask'].to(self.device)
 
-				output = self.model(input_ids, attention_masks)
-
-				probs= nn.Softmax(output.logits, dim=1)
+				output = self.model(input_ids=input_ids, attention_masks=attention_masks)
+				softmax = nn.Softmax(dim=1)
+				probs= softmax(output.logits)
 				total_probs += probs.mean(dim=0)
 
 			avg_probs = total_probs/len(self.post_dataloader)
+
+			return avg_probs
+
+
+if __name__ == '__main__':
+	run =RunInference('GME')
+	print(run.evaluate())
 
 
 
