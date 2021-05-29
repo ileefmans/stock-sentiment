@@ -24,6 +24,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
  
 ## SMALL TODO:        
   1) Make sure to check if stock already exists before editing STOCK table    
+  2) Add script for self labeling and add labels to db
   2) Write training script    
    
   
