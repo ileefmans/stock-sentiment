@@ -116,7 +116,7 @@ class Database:
             sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
                 VALUES (%s, %s, %s, %s);'''
 
-            self. cur.execute(sql, (data[0], data[1], data[2], data[3]))
+            self.cur.execute(sql, (data[0], data[1], data[2], data[3]))
             self.conn.commit()
             return
 
@@ -143,13 +143,23 @@ class Database:
             sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
                 VALUES (%s, %s, %s, %s);'''
 
-            self. cur.execute(sql, (data[0], data[1], data[2], data[3]))
+            self.cur.execute(sql, (data[0], data[1], data[2], data[3]))
             self.conn.commit()
             return
 
         else:
-            raise Exception("Only 'POSTS', 'COMMENTS', or 'STOCKS' valid arguments for 'table'")
+            raise Exception("Only 'POSTS', 'COMMENTS', 'STOCKS', 'LABELED_POSTS', or 'LABELED_COMMENTS' valid arguments for 'table'")
 
+    def label(self, table_name, ID, label):
+        if table_name=='LABELED_POSTS':
+            sql = "UPDATE LABELED_POSTS SET LABEL={} WHERE POST_ID='{}';".format(label, ID)
+        elif table_name=='LABELED_COMMENTS':
+            sql = "UPDATE LABELED_COMMENTS SET LABEL={} WHERE COMMENT_ID='{}';".format(label, ID)
+        else:
+            raise Exception("Only 'LABELED_POSTS' or 'LABELED_COMMENTS' valid arguments for 'table_name'")
+        self.cur.execute(sql)
+        self.conn.commit()
+        return
 
     def query(self, sql):
         self.cur.execute(sql)
