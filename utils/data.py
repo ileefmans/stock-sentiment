@@ -46,26 +46,18 @@ class Database:
         sql = '''USE {}'''.format(database_name)
         self.cur.execute(sql)
 
-    def initialize_training_table(self):
+    def initialize_training_tables(self):
         sql1 = '''CREATE TABLE LABELED_POSTS(
                 POST_ID CHAR(20) NOT NULL,
-                STOCK_ID CHAR(20) NOT NULL,
-                TITLE CHAR(100),
-                SCORE INT,
-                SUBREDDIT CHAR(20),
-                URL CHAR(50),
-                NUM_COMMENTS INT,
-                BODY TEXT,
-                CREATED FLOAT,
-                LABEL INT
+                TARGET INT DEFAULT NULL,
+                TITLE CHAR(100)
             )'''
 
         sql2 = '''CREATE TABLE LABELED_COMMENTS(
                 COMMENT_ID CHAR(20) NOT NULL,
                 POST_ID CHAR(20) NOT NULL,
-                STOCK_ID CHAR(20) NOT NULL,
-                COMMENT TEXT,
-                LABEL INT
+                TARGET INT DEFAULT NULL,
+                COMMENT TEXT
             )'''
 
         self.cur.execute(sql1)
@@ -132,18 +124,16 @@ class Database:
             return
 
         elif table == 'LABELED_POSTS':
-            sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, CREATED) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+            sql = "INSERT INTO POSTS (POST_ID, TITLE) VALUES (%s, %s);"
         
-            self.cur.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
+            self.cur.execute(sql, (data[0], data[1]))
             self.conn.commit()
             return
 
         elif table == 'LABELED_COMMENTS':
-            sql = '''INSERT INTO COMMENTS(COMMENT_ID, POST_ID, STOCK_ID, COMMENT)
-                VALUES (%s, %s, %s, %s);'''
+            sql = "INSERT INTO COMMENTS(COMMENT_ID, POST_ID, COMMENT) VALUES (%s, %s, %s);"
 
-            self.cur.execute(sql, (data[0], data[1], data[2], data[3]))
+            self.cur.execute(sql, (data[0], data[1], data[2]))
             self.conn.commit()
             return
 
@@ -239,8 +229,8 @@ class ScrapeWSB:
                 db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                             post.selftext, post.created])
             else:
-                db.insert('LABELED_POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
-                            post.selftext, post.created])
+                db.insert('LABELED_POSTS', [post.id, post.title])
+                
 
             post_id_list.append(post.id)
 
@@ -279,7 +269,7 @@ class ScrapeWSB:
                     if not training:
                         db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
                     else:
-                        db.insert('LABELED_COMMENTS', [top_level_comment.id, ID, self.stock_name, top_level_comment.body])
+                        db.insert('LABELED_COMMENTS', [top_level_comment.id, ID, top_level_comment.body])
 
                 else:
                     break
