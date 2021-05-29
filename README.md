@@ -22,11 +22,10 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   6) Build Web App  
   7) Set up monitoring  
  
-## SMALL TODO:    
-  1) Remove code for training tables      
-  2) Make sure to check if stock already exists before editing STOCK table    
-  3) Add script for self labeling and add labels to db
-  4) Write training script    
+## SMALL TODO:         
+  1) Make sure to check if stock already exists before editing STOCK table    
+  2) Add script for self labeling and add labels to db
+  3) Write training script    
    
   
 ## Getting Started  
