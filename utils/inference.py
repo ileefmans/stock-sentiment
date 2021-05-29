@@ -63,19 +63,35 @@ class RunInference:
 		# Set model to evaluate
 		with torch.no_grad():
 
-			total_probs = torch.zeros([2])
+			total_post_probs = torch.zeros([2])
 			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
-				input_ids = post['post_input_ids'].to(self.device)
-				attention_masks = post['post_attention_mask'].to(self.device)
+				post_input_ids = post['post_input_ids'].to(self.device)
+				post_attention_masks = post['post_attention_mask'].to(self.device)
 
-				output = self.model(input_ids=input_ids, attention_masks=attention_masks)
+				post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 				softmax = nn.Softmax(dim=1)
-				probs= softmax(output.logits)
-				total_probs += probs.mean(dim=0)
+				post_probs= softmax(post_output.logits)
+				total_post_probs += post_probs.mean(dim=0)
 
-			avg_probs = total_probs/len(self.post_dataloader)
+			avg_post_probs = total_post_probs/len(self.post_dataloader)
 
-			return avg_probs
+
+			total_comment_probs = torch.zeros([2])
+			for comment in tqdm(self.comment_dataloader, desc='Determining Sentiment From Comments: '):
+				comment_input_ids = comment['comment_input_ids'].to(self.device)
+				comment_attention_masks = comment['comment_attention_mask'].to(self.device)
+
+				comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
+				softmax = nn.Softmax(dim=1)
+				comment_probs= softmax(comment_output.logits)
+				total_comment_probs += comment_probs.mean(dim=0)
+
+			avg_comment_probs = total_comment_probs/len(self.comment_dataloader)
+
+
+			return {'avg_post_probs': avg_post_probs,
+					'avg_comment_probs': avg_comment_probs
+					}
 
 
 if __name__ == '__main__':
