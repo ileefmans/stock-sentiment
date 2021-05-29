@@ -1,8 +1,10 @@
 import torch
+from torch import nn
 from torch.utils.data import DataLoader
 from datahelper import PostDataset, CommentDataset, get_indices
 from models import SentimentModel
 import yaml
+from tqdm import tqdm
 
 
 
@@ -56,7 +58,24 @@ class RunInference:
 									 shuffle=self.config['shuffle']
 									 )
 
-		
+	def evaluate(self):
+
+		# Set model to evaluate
+		with torch.no_grad():
+
+			total_probs = torch.zeros([2])
+			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
+				input_ids = post['post_input_ids'].to(device)
+				attention_masks = post['post_attention_mask'].to(device)
+
+				output = self.model(input_ids, attention_masks)
+
+				probs= nn.Softmax(output.logits, dim=1)
+				total_probs += probs.mean(dim=0)
+
+			avg_probs = total_probs/len(self.post_dataloader)
+
+
 
 
 
