@@ -61,23 +61,27 @@ if type_text == 'POSTS' and len(ids)>0:
 	display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[0][0]))[0][0])
 	display_text_key = str(int(display_text_key)+1)
 	if (sentiment=='positive') and enter:
-		st.text("POSITIVE")
+		
 		# count+=1
+		db.label(type_text, ids[0][0], 1)
 		
 	if (sentiment=='negative') and enter:
-		st.text("NEGATIVE")
+		
 		# count+=1
+		db.label(type_text, ids[0][0], 0)
 		
 elif type_text == 'COMMENTS' and len(ids)>0:
 	display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[0][0]))[0][0])
 	display_text_key = str(int(display_text_key)+1)
 	if (sentiment=='positive') and enter:
-		st.text("POSITIVE")
+		
 		# count+=1
+		db.label(type_text, ids[0][0], 1)
 		
 	if (sentiment=='negative') and enter:
-		st.text("NEGATIVE")
+		
 		# count+=1
+		db.label(type_text, ids[0][0], 0)
 else:
 	display_text.text("NO UNLABELED {}".format(type_text))
 	display_text_key = str(int(display_text_key)+1)
