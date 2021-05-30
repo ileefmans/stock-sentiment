@@ -6,6 +6,7 @@ st.title('**Labeling Interface**')
 st.markdown(""" #### Interface to assist in hand labeling posts and comments """)
 st.text("")
 st.text("")
+st.text("")
 
 stock_id = st.sidebar.text_input("Stock Symbol")
 
@@ -34,10 +35,17 @@ if type_text=='POSTS': # and start
 elif type_text=='COMMENTS': # and start
 	ids = db.query("SELECT COMMENT_ID FROM COMMENTS WHERE TARGET=-1 ;")
 
+st.text("")
+st.markdown("""#### Text to label:""")
+st.text("")
+
 display_text = st.empty() 
+
+st.text("")
+st.text("")
 sentiment = st.selectbox("Sentiment", ['positive', 'negative'])
 ent = st.empty()
-enter = ent.button("Enter")
+enter = ent.button("Label")
 display_text_key = '0'
 
 
@@ -49,8 +57,8 @@ display_text_key = '0'
 	
 	
 
-if type_text == 'POSTS':
-	display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[0][0])))
+if type_text == 'POSTS' and len(ids)>0:
+	display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[0][0]))[0][0])
 	display_text_key = str(int(display_text_key)+1)
 	if (sentiment=='positive') and enter:
 		st.text("POSITIVE")
@@ -60,16 +68,20 @@ if type_text == 'POSTS':
 		st.text("NEGATIVE")
 		# count+=1
 		
+elif type_text == 'COMMENTS' and len(ids)>0:
+	display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[0][0]))[0][0])
+	display_text_key = str(int(display_text_key)+1)
+	if (sentiment=='positive') and enter:
+		st.text("POSITIVE")
+		# count+=1
+		
+	if (sentiment=='negative') and enter:
+		st.text("NEGATIVE")
+		# count+=1
 else:
-	display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[0][0])))
+	display_text.text("NO UNLABELED {}".format(type_text))
 	display_text_key = str(int(display_text_key)+1)
-	if (sentiment=='positive') and enter:
-		st.text("POSITIVE")
-		# count+=1
-		
-	if (sentiment=='negative') and enter:
-		st.text("NEGATIVE")
-		# count+=1
+
 			
 
 
