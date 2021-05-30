@@ -15,3 +15,17 @@ num_comments = st.sidebar.slider("Number of Comments", min_value=1, max_value=10
 
 
 time_filter = st.sidebar.selectbox("Time Filter", ['day', 'week', 'month'], index=0)
+
+
+placeholder = st.empty()
+start = placeholder.button("Start")
+
+if start:
+	placeholder.empty()
+	stop = placeholder.button("Stop")
+	placeholder2 = st.empty()
+	while not stop:
+		placeholder2.text("Running")
+
+		
+
