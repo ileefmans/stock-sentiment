@@ -84,7 +84,8 @@ class PostDataset(torch.utils.data.Dataset):
         return len(self.post_indices)
         
     def __getitem__(self, index):
-        post = self.db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(self.post_indices[index][0]))[0][0]
+        post_target = self.db.query("SELECT TITLE, TARGET FROM POSTS WHERE POST_ID='{}'".format(self.post_indices[index][0]))
+        post, target = post_target[0][0], post_target[1][0]
         post_encoding = self.tokenizer.encode_plus(
             post,
             max_length=self.max_len,
@@ -99,8 +100,8 @@ class PostDataset(torch.utils.data.Dataset):
         return {
             'post': post,
             'post_input_ids': post_encoding['input_ids'].flatten(),
-            'post_attention_mask': post_encoding['attention_mask'].flatten()
-            #'targets': torch.tensor(target, dtype=torch.long)
+            'post_attention_mask': post_encoding['attention_mask'].flatten(),
+            'target': torch.tensor(target, dtype=torch.long)
             }
 
 
@@ -119,7 +120,8 @@ class CommentDataset(torch.utils.data.Dataset):
         return len(self.comment_indices)
         
     def __getitem__(self, index):
-        comment = self.db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(self.comment_indices[index][0]))[0][0]
+        comment_target = self.db.query("SELECT COMMENT, TARGET FROM COMMENTS WHERE COMMENT_ID='{}'".format(self.comment_indices[index][0]))
+        comment, target = comment_target[0][0], comment_target[1][0]
         comment_encoding = self.tokenizer.encode_plus(
             comment,
             max_length=self.max_len,
@@ -133,8 +135,8 @@ class CommentDataset(torch.utils.data.Dataset):
         return {
             'comment': comment,
             'comment_input_ids': comment_encoding['input_ids'].flatten(),
-            'comment_attention_mask': comment_encoding['attention_mask'].flatten()
-            #'targets': torch.tensor(target, dtype=torch.long)
+            'comment_attention_mask': comment_encoding['attention_mask'].flatten(),
+            'target': torch.tensor(target, dtype=torch.long)
             }
 
 
