@@ -18,6 +18,15 @@ num_comments = st.sidebar.slider("Number of Comments", min_value=1, max_value=10
 
 time_filter = st.sidebar.selectbox("Time Filter", ['day', 'week', 'month'], index=0)
 
+scrape = st.sidebar.button("Scrape")
+done = st.sidebar.button("Done Scraping")
+
+if scrape and stock_id and (not done):
+	with st.spinner('Scraping...'):
+		scrapewsb = ScrapeWSB(stock_id, num_posts, num_comments, time_filter=time_filter)
+		df = scrapewsb.scrape()
+		scrapewsb.convert(df)
+
 
 
 
