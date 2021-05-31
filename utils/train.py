@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
+from transformers import AdamW, get_linear_schedule_with_warmup
 from datahelper import PostDataset, CommentDataset, get_indices
 from models import SentimentModel
 import yaml
@@ -66,7 +67,19 @@ class Train:
 									 shuffle=self.config['shuffle']
 									 )
 
+		# Optimizer
+		self.optimizer = AdamW(model.parameters(),lr=2e-5, correct_bias=False)
 
+		# Set up learning rate scheduler
+		total_steps = (len(self.post_trainloader) + len(self.comment_trainloader)) * self.config['epochs']
+		self.scheduler = get_linear_schedule_with_warmup(
+			optimizer,
+			num_warmup_steps=0,
+			num_training_steps=total_steps
+			)
+
+		# Initialize Loss Function
+		loss_fcn = nn.CrossEntropyLoss().to(device)
 
 
 
