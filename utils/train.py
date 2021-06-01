@@ -110,18 +110,53 @@ class Train:
 
 
 		start_epoch = 0
-
+		total_loss = 0
+		summed_acc = 0
 		# Start Training Loop
 		for epoch in range(start_epoch, self.epochs+1):
 
 			# Train
 			if epoch>0:
 
+
+				epoch_loss = 0
+				total_epoch_acc = 0
 				# Set model to training mode
 				self.model.train()
+				for post_batch in tqdm(self.post_trainloader, desc='Train Epoch {}'.format(epoch)):
 
-				for batch in tqdm(self.post_trainloader, desc='Train Epoch {}'.format(epoch))
-				
+					# Send input ids and attention masks to device
+					post_input_ids = post_batch['post_input_ids'].to(self.device)
+					post_attention_masks = post_batch['post_attention_mask'].to(self.device)
+					post_targets = post_batch['target'].to(self.device)
+
+					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
+
+					# Calculate Loss
+					loss = loss_fcn(post_output, post_targets)
+
+					# Make Predictions
+					_, preds = torch.max(post_output, dim=1)
+
+					# Calculate Accuracy
+					diff = post_preds - post_targets
+					acc = 1 - ((diff).abs().sum()/len(diff))
+
+					epoch_loss+=loss
+					total_epoch_acc+=acc
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
