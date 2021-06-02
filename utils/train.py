@@ -118,6 +118,7 @@ class Train:
 
 		if self.load_weights:
 			start_epoch, losses, accuracies = self.load_checkpoint()
+			print("\nWeights Loaded\n")
 			start_epoch+=1
 		else:
 			start_epoch = 0
@@ -212,9 +213,15 @@ class Train:
 				losses.append(avg_loss)
 				avg_acc = total_epoch_train_acc / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
 				accuracies.append(avg_acc)
+
+				self.save_checkpoint(epoch, losses, accuracies)
+				print("\nWeights Saved\n")
+
 				print(
 					f"====> Epoch: {epoch} Average train loss: {avg_loss :.4f}\n"
 					)
+
+
 
 		# Save model after training is complete
 		if self.local:
