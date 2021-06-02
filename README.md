@@ -11,7 +11,7 @@
 ![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-Travis%20CI-lightgrey?&style=flat&logo=Travis-CI&color=yellow&logoColor=yellow)  
 
-*Note that this app is still in production*  
+*Note that this app is in the middle stages of production*  
 This application scrapes Reddit to extract sentiment for a desired stock and then factors this information into predictions about the stocks future direction.
 
 
