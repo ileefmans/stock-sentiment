@@ -145,6 +145,19 @@ class Train:
 					epoch_loss+=loss
 					total_epoch_acc+=acc
 
+					# Clear optimizer gradient
+					self.optimizer.zero_grad()
+
+					# Backprop
+					loss.backward()
+
+					# Clip gradients
+					nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+
+					# Take a step with optimizer
+					self.optimizer.step()
+					self.scheduler.step()
+
 
 
 
