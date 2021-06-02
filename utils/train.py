@@ -214,7 +214,12 @@ class Train:
 				avg_acc = total_epoch_train_acc / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
 				accuracies.append(avg_acc)
 
-				self.save_checkpoint(epoch, losses, accuracies)
+				self.save_checkpoint(
+					epoch, 
+					losses, 
+					accuracies
+				)
+				
 				print("\nWeights Saved\n")
 
 				print(
