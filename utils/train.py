@@ -207,14 +207,14 @@ class Train:
 		# Save model after training is complete
 		if self.local:
 			torch.save(
-				self.model, "weights/{}.pt".format(self.config['model'])
+				self.model, "models/{}.pt".format(self.config['model'])
 				)
 		else:
 			torch.save(
 				self.model, "{}.pt".format(self.config['model'])
 				)
 
-			
+
 
 
 
