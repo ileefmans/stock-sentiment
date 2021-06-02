@@ -214,6 +214,32 @@ class Train:
 				self.model, "{}.pt".format(self.config['model'])
 				)
 
+	def save_checkpoint(self, epoch, loss):
+		if self.local:
+			torch.save(
+				{
+					"epoch": epoch,
+					"model_state_dict": self.model.state_dict(),
+					"optimizer_state_dict": self.optimizer.state_dict(),
+					"loss": loss
+				},
+				"models/params/{}.tar".format(self.config['model'])
+			)
+
+		else:
+			torch.save(
+				{
+					"epoch": epoch,
+					"model_state_dict": self.model.state_dict(),
+					"optimizer_state_dict": self.optimizer.state_dict(),
+					"loss": loss
+				},
+				"{}.tar".format(self.config['model'])
+			)
+
+	def load_checkpoint(self):
+		pass
+
 
 
 
