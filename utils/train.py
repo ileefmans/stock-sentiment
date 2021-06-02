@@ -110,8 +110,8 @@ class Train:
 
 
 		start_epoch = 0
-		total_loss = 0
-		summed_acc = 0
+		losses = []
+		accuracies = []
 		# Start Training Loop
 		for epoch in range(start_epoch, self.epochs+1):
 
@@ -119,11 +119,11 @@ class Train:
 			if epoch>0:
 
 
-				epoch_loss = 0
-				total_epoch_acc = 0
+				epoch_train_loss = 0
+				total_epoch_train_acc = 0
 				# Set model to training mode
 				self.model.train()
-				for post_batch in tqdm(self.post_trainloader, desc='Train Epoch {}'.format(epoch)):
+				for post_batch in tqdm(self.post_trainloader, desc='Post Train Epoch {}'.format(epoch)):
 
 					# Send input ids and attention masks to device
 					post_input_ids = post_batch['post_input_ids'].to(self.device)
@@ -142,8 +142,8 @@ class Train:
 					# Calculate Accuracy
 					acc = torch.sum(preds==ground_truths)/len(preds)
 
-					epoch_loss+=loss
-					total_epoch_acc+=acc
+					epoch_train_loss+=loss
+					total_epoch_train_acc+=acc
 
 					# Clear optimizer gradient
 					self.optimizer.zero_grad()
@@ -157,6 +157,54 @@ class Train:
 					# Take a step with optimizer
 					self.optimizer.step()
 					self.scheduler.step()
+
+
+
+
+				for comment_batch in tqdm(self.comment_trainloader, desc='Comment Train Epoch {}'.format(epoch)):
+
+					# Send input ids and attention masks to device
+					comment_input_ids = comment_batch['comment_input_ids'].to(self.device)
+					comment_attention_masks = comment_batch['comment_attention_mask'].to(self.device)
+					comment_targets = comment_batch['target'].reshape(-1,2).to(self.device)
+
+					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
+
+					# Calculate Loss
+					loss = loss_fcn(comment_output, comment_targets)
+
+					# Make Predictions
+					_, preds = torch.max(comment_output, dim=1)
+					_, ground_truths = torch.max(comment_targets, dim=1)
+
+					# Calculate Accuracy
+					acc = torch.sum(preds==ground_truths)/len(preds)
+
+					epoch_train_loss+=loss
+					total_epoch_train_acc+=acc
+
+					# Clear optimizer gradient
+					self.optimizer.zero_grad()
+
+					# Backprop
+					loss.backward()
+
+					# Clip gradients
+					nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+
+					# Take a step with optimizer
+					self.optimizer.step()
+					self.scheduler.step()
+
+				avg_loss = epoch_train_loss / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
+				losses.append(avg_loss)
+				avg_acc = total_epoch_train_acc / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
+				accuracies.append(avg_acc)
+				print(
+					f"====> Epoch: {epoch} Average train loss: {avg_loss :.4f}\n"
+					)
+
+
 
 
 
