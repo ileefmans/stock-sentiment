@@ -85,7 +85,7 @@ class PostDataset(torch.utils.data.Dataset):
         
     def __getitem__(self, index):
         post_target = self.db.query("SELECT TITLE, TARGET FROM POSTS WHERE POST_ID='{}'".format(self.post_indices[index][0]))
-        post, target = post_target[0][0], post_target[1][0]
+        post, target = post_target[0][0], post_target[0][1]
         post_encoding = self.tokenizer.encode_plus(
             post,
             max_length=self.max_len,
@@ -121,7 +121,7 @@ class CommentDataset(torch.utils.data.Dataset):
         
     def __getitem__(self, index):
         comment_target = self.db.query("SELECT COMMENT, TARGET FROM COMMENTS WHERE COMMENT_ID='{}'".format(self.comment_indices[index][0]))
-        comment, target = comment_target[0][0], comment_target[1][0]
+        comment, target = comment_target[0][0], comment_target[0][1]
         comment_encoding = self.tokenizer.encode_plus(
             comment,
             max_length=self.max_len,
