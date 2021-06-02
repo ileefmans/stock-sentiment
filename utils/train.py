@@ -204,6 +204,19 @@ class Train:
 					f"====> Epoch: {epoch} Average train loss: {avg_loss :.4f}\n"
 					)
 
+		# Save model after training is complete
+		if self.local:
+			torch.save(
+				self.model, "weights/{}.pt".format(self.config['model'])
+				)
+		else:
+			torch.save(
+				self.model, "{}.pt".format(self.config['model'])
+				)
+
+			
+
+
 
 
 
