@@ -24,6 +24,11 @@ def get_args():
 		default=True,
 		help="True if running on local machine, False if running on AWS",
 		)
+	parser.add_argument(
+		"--load_weights",
+		type=bool,
+		default=False,
+		help="True to load checkpoint from previous training session, False to start training from base")
 	return parser.parse_args()
 
 
@@ -37,6 +42,7 @@ class Train:
 		self.config = get_config()
 		self.ops = get_args()
 		self.local = self.ops.local
+		self.load_weights = self.ops.load_weights
 
 		self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -104,14 +110,20 @@ class Train:
 
 
 	def train(self):
+
+		
 		if not self.local:
 			torch.set_default_tensor_type(torch.cuda.FloatTensor)
 			print("\n \n EVERYTHING TO CUDA \n \n")
 
+		if self.load_weights:
+			start_epoch, losses, accuracies = self.load_checkpoint()
+			start_epoch+=1
+		else:
+			start_epoch = 0
+			losses = []
+			accuracies = []
 
-		start_epoch = 0
-		losses = []
-		accuracies = []
 		# Start Training Loop
 		for epoch in range(start_epoch, self.epochs+1):
 
@@ -214,14 +226,15 @@ class Train:
 				self.model, "{}.pt".format(self.config['model'])
 				)
 
-	def save_checkpoint(self, epoch, loss):
+	def save_checkpoint(self, epoch, loss, accuracy):
 		if self.local:
 			torch.save(
 				{
 					"epoch": epoch,
 					"model_state_dict": self.model.state_dict(),
 					"optimizer_state_dict": self.optimizer.state_dict(),
-					"loss": loss
+					"loss": loss,
+					"accuracy": accuracy
 				},
 				"models/params/{}.tar".format(self.config['model'])
 			)
@@ -232,7 +245,8 @@ class Train:
 					"epoch": epoch,
 					"model_state_dict": self.model.state_dict(),
 					"optimizer_state_dict": self.optimizer.state_dict(),
-					"loss": loss
+					"loss": loss,
+					"accuracy": accuracy
 				},
 				"{}.tar".format(self.config['model'])
 			)
@@ -248,7 +262,8 @@ class Train:
 
 		return {
 				'epoch': checkpoint['epoch'], 
-				'loss': checkpoint['loss']
+				'loss': checkpoint['loss'],
+				'accuracy': checkpoint['accuracy']
 				}
 
 
