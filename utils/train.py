@@ -238,7 +238,18 @@ class Train:
 			)
 
 	def load_checkpoint(self):
-		pass
+		if self.local:
+			checkpoint = torch.load("models/params/{}.tar".format(self.config['model']))
+		else:
+			checkpoint = torch.load("{}.tar".format(self.config['model']))
+
+		self.model.load_state_dict(checkpoint['model_state_dict'])
+		self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+		return {
+				'epoch': checkpoint['epoch'], 
+				'loss': checkpoint['loss']
+				}
 
 
 
