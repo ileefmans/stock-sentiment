@@ -27,12 +27,14 @@ class FineTuneBaseModel(nn.Module):
 		self.softmax = nn.Softmax(dim=1)
 
 	def forward(self, input_ids, attention_masks):
-		_, pooled_output = self.bert(
+		output = self.bert(
 									input_ids=input_ids, 
 									attention_mask = attention_masks
 		)
-
-		x = self.drop(pooled_output)
+		print(type(output.pooler_output))
+		print(output.pooler_output)
+		
+		x = self.drop(output.pooler_output)
 		x = self.fc(x)
 		x = self.softmax(x)
 		return x
