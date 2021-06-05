@@ -61,7 +61,7 @@ class Database:
                 )'''
 
         sql2 = '''CREATE TABLE COMMENTS(
-                COMMENT_ID CHAR(20) NOT NULL,
+                COMMENT_ID CHAR(20) PRIMARY KEY NOT NULL,
                 POST_ID CHAR(20) NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
                 TARGET INT,
