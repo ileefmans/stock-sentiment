@@ -31,8 +31,8 @@ class FineTuneBaseModel(nn.Module):
 									input_ids=input_ids, 
 									attention_mask = attention_masks
 		)
-		print(type(output.pooler_output))
-		print(output.pooler_output)
+		# print(type(output.pooler_output))
+		# print(output.pooler_output)
 		
 		x = self.drop(output.pooler_output)
 		x = self.fc(x)
