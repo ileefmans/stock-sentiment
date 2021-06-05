@@ -353,40 +353,9 @@ class Train:
 				}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+	trainer = Train()
+	training_output = trainer.train()
 
 
 
