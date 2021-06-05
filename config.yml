@@ -4,7 +4,7 @@ Training:
   batch_size: 3
   num_workers: 0
   shuffle: True
-  epochs: 10
+  epochs: 2
 
 
 Inference:
