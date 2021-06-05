@@ -55,7 +55,7 @@ class Train:
 		if self.config['model']=='pretrained':
 			self.model = SentimentModel().to(self.device)
 		elif self.config['model'] == 'finetuned':
-			pass ########### INSERT MODEL FOR FINETUNING HERE
+			self.model = FineTuneBaseModel().to(self.device)
 
 		self.indices = get_indices("no_stock_id")
 
@@ -147,7 +147,8 @@ class Train:
 					post_targets = post_batch['target'].reshape(-1,2).to(self.device)
 
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
-
+					# print(post_output)
+					# print(type(post_output))
 					# Calculate Loss
 					loss = self.loss_fcn(post_output, post_targets)
 
