@@ -68,7 +68,7 @@ class Database:
                 COMMENT TEXT
                 )'''
         sql3 = '''CREATE TABLE STOCKS(
-                STOCK_ID CHAR(20) NOT NULL,
+                STOCK_ID CHAR(20) PRIMARY KEY NOT NULL,
                 LAST_SCRAPED DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )'''
 
