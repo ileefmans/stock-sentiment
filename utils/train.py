@@ -150,6 +150,8 @@ class Train:
 					# print(post_output)
 					# print(type(post_output))
 					# Calculate Loss
+
+
 					loss = self.loss_fcn(post_output, post_targets)
 
 					# Make Predictions
@@ -246,6 +248,9 @@ class Train:
 
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 
+
+					print(type(post_output), type(post_targets))
+					print(post_output.size(), post_targets.size())
 					# Calculate Loss
 					loss = self.loss_fcn(post_output, post_targets)
 
