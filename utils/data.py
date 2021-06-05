@@ -120,6 +120,12 @@ class Database:
         self.conn.commit()
         return
 
+    def update_last_scraped(self, stock_id):
+        sql = "UPDATE STOCKS SET LAST_SCRAPED=NOW() WHERE STOCK_ID='{}';".format(stock_id)
+        self.cur.execute(sql)
+        self.conn.commit()
+        return
+
     def query(self, sql):
         self.cur.execute(sql)
         return self.cur.fetchall()
@@ -171,7 +177,7 @@ class ScrapeWSB:
     
     def scrape(self):
         #Blank list for hottest posts and their attributes
-        posts = []
+        #posts = []
 
         # obtain most recent posts from wallstreetbets with regard to GME
         self.client_id, self.client_secret = get_keys("Reddit")
@@ -190,19 +196,19 @@ class ScrapeWSB:
         for post in queried_posts:
             
             # append post attributes to list
-            posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
-                        post.selftext, post.created])
+            # posts.append([post.id, self.stock_name, post.title, post.score, post.subreddit, post.url, post.num_comments, 
+            #             post.selftext, post.created])
 
 
-            
-            db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
+            if len(db.query("SELECT * FROM POSTS WHERE POST_ID='{}';".format(post.id)))==0:
+                db.insert('POSTS', [post.id, self.stock_name, post.title, post.score, str(post.subreddit), post.url, post.num_comments, 
                             post.selftext, -1, post.created])
                 
 
-            post_id_list.append(post.id)
+                post_id_list.append(post.id)
 
         # Create Dataframe for top 10 hottest posts
-        posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
+        # posts = pd.DataFrame(posts,columns=['post_id', 'stock_id', 'title', 'score', 'subreddit', 'url', 'num_comments', 'body', 'created'])
 
         
         return post_id_list
@@ -225,21 +231,25 @@ class ScrapeWSB:
             submission.comments.replace_more(limit=0)
 
             # Initialize list for commments
-            comments = []
+            #comments = []
             count = 0
             # Loop through comments
             for top_level_comment in submission.comments:
                 # append comments to list
                 if count<self.num_comments:
-                    comments.append(top_level_comment.body)
+                    #comments.append(top_level_comment.body)
 
-                    db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, -1, top_level_comment.body])
+                    if len(db.query("SELECT * FROM COMMENTS WHERE COMMENT_ID='{}';".format(top_level_comment.id)))==0:
+                        db.insert('COMMENTS', [top_level_comment.id, ID, self.stock_name, -1, top_level_comment.body])
 
                 else:
                     break
                 count+=1 
 
-        db.insert('STOCKS', self.stock_name) 
+        if len(db.query("SELECT * FROM STOCKS WHERE STOCK_ID='{}';".format(self.stock_name)))==0:
+            db.insert('STOCKS', self.stock_name)
+        else:
+            db.update_last_scraped(self.stock_name)
         return 
 
     def process(self):
