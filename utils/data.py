@@ -48,7 +48,7 @@ class Database:
 
     def initialize_tables(self):
         sql1 = '''CREATE TABLE POSTS(
-                POST_ID CHAR(20) NOT NULL,
+                POST_ID CHAR(20) PRIMARY KEY NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
                 TITLE CHAR(100),
                 SCORE INT,
