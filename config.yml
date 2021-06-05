@@ -1,7 +1,7 @@
 Training:
   embedding_max_len: 512
   model: pretrained
-  batch_size: 25
+  batch_size: 3
   num_workers: 0
   shuffle: True
   epochs: 10
