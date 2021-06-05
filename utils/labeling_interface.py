@@ -63,13 +63,15 @@ if type_text == 'POSTS':
 	if len(ids)==0:
 		display_text.text("NO UNLABELED {}".format(type_text))
 		display_text_key = str(int(display_text_key)+1)
+
 	else:
 		if sentiment=="select sentiment":
 			display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[0][0]))[0][0])
 			display_text_key = str(int(display_text_key)+1)
 		else:
-			display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[1][0]))[0][0])
-			display_text_key = str(int(display_text_key)+1)
+			if len(ids)>1:
+				display_text.text(db.query("SELECT TITLE FROM POSTS WHERE POST_ID='{}'".format(ids[1][0]))[0][0])
+				display_text_key = str(int(display_text_key)+1)
 		if (sentiment=='positive'):
 			
 			
@@ -92,8 +94,9 @@ elif type_text == 'COMMENTS':
 			display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[0][0]))[0][0])
 			display_text_key = str(int(display_text_key)+1)
 		else:
-			display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[1][0]))[0][0])
-			display_text_key = str(int(display_text_key)+1)
+			if len(ids)>1:
+				display_text.text(db.query("SELECT COMMENT FROM COMMENTS WHERE COMMENT_ID='{}'".format(ids[1][0]))[0][0])
+				display_text_key = str(int(display_text_key)+1)
 		if (sentiment=='positive'):
 			
 			
