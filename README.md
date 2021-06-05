@@ -30,7 +30,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 ## SMALL TODO:         
   1) Make sure to check if stock already exists before editing STOCK table     
   2) Add labels to db     
-  3) Write training script (Check output size)    
+  3) Write training script (Change target to 1D tensor of indices)    
    
   
 ## Getting Started  
