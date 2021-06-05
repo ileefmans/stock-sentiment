@@ -95,18 +95,18 @@ class Train:
 									 )
 
 		# Optimizer
-		self.optimizer = AdamW(model.parameters(),lr=2e-5, correct_bias=False)
+		self.optimizer = AdamW(self.model.parameters(),lr=2e-5, correct_bias=False)
 
 		# Set up learning rate scheduler
 		total_steps = (len(self.post_trainloader) + len(self.comment_trainloader)) * self.epochs
 		self.scheduler = get_linear_schedule_with_warmup(
-			optimizer,
+			self.optimizer,
 			num_warmup_steps=0,
 			num_training_steps=total_steps
 			)
 
 		# Initialize Loss Function
-		loss_fcn = nn.CrossEntropyLoss().to(device)
+		self.loss_fcn = nn.CrossEntropyLoss().to(self.device)
 
 
 	def train(self):
@@ -149,7 +149,7 @@ class Train:
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 
 					# Calculate Loss
-					loss = loss_fcn(post_output, post_targets)
+					loss = self.loss_fcn(post_output, post_targets)
 
 					# Make Predictions
 					_, preds = torch.max(post_output, dim=1)
@@ -187,7 +187,7 @@ class Train:
 					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
 
 					# Calculate Loss
-					loss = loss_fcn(comment_output, comment_targets)
+					loss = self.loss_fcn(comment_output, comment_targets)
 
 					# Make Predictions
 					_, preds = torch.max(comment_output, dim=1)
@@ -246,7 +246,7 @@ class Train:
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 
 					# Calculate Loss
-					loss = loss_fcn(post_output, post_targets)
+					loss = self.loss_fcn(post_output, post_targets)
 
 					# Make Predictions
 					_, preds = torch.max(post_output, dim=1)
@@ -268,7 +268,7 @@ class Train:
 					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
 
 					# Calculate Loss
-					loss = loss_fcn(comment_output, comment_targets)
+					loss = self.loss_fcn(comment_output, comment_targets)
 
 					# Make Predictions
 					_, preds = torch.max(comment_output, dim=1)
