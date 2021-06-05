@@ -144,7 +144,7 @@ class Train:
 					# Send input ids and attention masks to device
 					post_input_ids = post_batch['post_input_ids'].to(self.device)
 					post_attention_masks = post_batch['post_attention_mask'].to(self.device)
-					post_targets = post_batch['target'].reshape(-1,2).to(self.device)
+					post_targets = post_batch['target'].to(self.device)#.reshape(-1,2).to(self.device)
 
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 					# print(post_output)
@@ -156,10 +156,10 @@ class Train:
 
 					# Make Predictions
 					_, preds = torch.max(post_output, dim=1)
-					_, ground_truths = torch.max(post_targets, dim=1)
+					# _, ground_truths = torch.max(post_targets, dim=1)
 
 					# Calculate Accuracy
-					acc = torch.sum(preds==ground_truths)/len(preds)
+					acc = torch.sum(preds==post_targets)/len(preds)
 
 					epoch_train_loss+=loss
 					total_epoch_train_acc+=acc
@@ -185,7 +185,7 @@ class Train:
 					# Send input ids and attention masks to device
 					comment_input_ids = comment_batch['comment_input_ids'].to(self.device)
 					comment_attention_masks = comment_batch['comment_attention_mask'].to(self.device)
-					comment_targets = comment_batch['target'].reshape(-1,2).to(self.device)
+					comment_targets = comment_batch['target'].to(self.device)#.reshape(-1,2).to(self.device)
 
 					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
 
@@ -194,10 +194,10 @@ class Train:
 
 					# Make Predictions
 					_, preds = torch.max(comment_output, dim=1)
-					_, ground_truths = torch.max(comment_targets, dim=1)
+					# _, ground_truths = torch.max(comment_targets, dim=1)
 
 					# Calculate Accuracy
-					acc = torch.sum(preds==ground_truths)/len(preds)
+					acc = torch.sum(preds==comment_targets)/len(preds)
 
 					epoch_train_loss+=loss
 					total_epoch_train_acc+=acc
@@ -244,22 +244,22 @@ class Train:
 					# Send input ids and attention masks to device
 					post_input_ids = post_batch['post_input_ids'].to(self.device)
 					post_attention_masks = post_batch['post_attention_mask'].to(self.device)
-					post_targets = post_batch['target'].reshape(-1,2).to(self.device)
+					post_targets = post_batch['target'].to(self.device)#.reshape(-1,2).to(self.device)
 
 					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 
 
-					print(type(post_output), type(post_targets))
-					print(post_output.size(), post_targets.size())
+					# print(type(post_output), type(post_targets))
+					# print(post_output.size(), post_targets.size())
 					# Calculate Loss
 					loss = self.loss_fcn(post_output, post_targets)
 
 					# Make Predictions
 					_, preds = torch.max(post_output, dim=1)
-					_, ground_truths = torch.max(post_targets, dim=1)
+					# _, ground_truths = torch.max(post_targets, dim=1)
 
 					# Calculate Accuracy
-					acc = torch.sum(preds==ground_truths)/len(preds)
+					acc = torch.sum(preds==post_targets)/len(preds)
 
 					epoch_test_loss+=loss
 					total_epoch_test_acc+=acc
@@ -269,7 +269,7 @@ class Train:
 					# Send input ids and attention masks to device
 					comment_input_ids = comment_batch['comment_input_ids'].to(self.device)
 					comment_attention_masks = comment_batch['comment_attention_mask'].to(self.device)
-					comment_targets = comment_batch['target'].reshape(-1,2).to(self.device)
+					comment_targets = comment_batch['target'].to(self.device)#.reshape(-1,2).to(self.device)
 
 					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
 
@@ -278,10 +278,10 @@ class Train:
 
 					# Make Predictions
 					_, preds = torch.max(comment_output, dim=1)
-					_, ground_truths = torch.max(comment_targets, dim=1)
+					# _, ground_truths = torch.max(comment_targets, dim=1)
 
 					# Calculate Accuracy
-					acc = torch.sum(preds==ground_truths)/len(preds)
+					acc = torch.sum(preds==comment_targets)/len(preds)
 
 					epoch_test_loss+=loss
 					total_epoch_test_acc+=acc
