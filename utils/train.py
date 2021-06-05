@@ -309,6 +309,7 @@ class Train:
 			torch.save(
 				self.model, "{}.pt".format(self.config['model'])
 				)
+		print("\nModel Saved\n")
 
 
 		return {
