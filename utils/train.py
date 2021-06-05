@@ -7,12 +7,13 @@ from models import SentimentModel, FineTuneBaseModel
 import yaml
 from tqdm import tqdm
 import argparse
+import logging
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s: %(levelname)s :%(message)s')
-file_handler = logging.FileHandler('logs/trainlog')
+file_handler = logging.FileHandler('logs/train.log')
 file_handler.setLevel(logging.ERROR)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
@@ -228,7 +229,7 @@ class Train:
 				losses.append(avg_loss)
 				logger.debug("  Epoch {} Train Loss is {},".format(epoch, avg_loss))
 				avg_acc = total_epoch_train_acc / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
-				logger.debug("  Epoch {} Train Accuracy is {}%,".format(epoch, round(avg_acc*100), 4))
+				logger.debug("  Epoch {} Train Accuracy is {}%,".format(epoch, round(float(avg_acc)*100), 4))
 				accuracies.append(avg_acc)
 
 				self.save_checkpoint(
@@ -302,7 +303,8 @@ class Train:
 				logger.debug("  Epoch {} Test Loss is {},".format(epoch, avg_test_loss))
 				avg_test_acc = total_epoch_test_acc / (len(self.post_testloader.dataset)+len(self.comment_testloader.dataset))
 				test_accuracies.append(avg_test_acc)
-				logger.debug("  Epoch {} Test Accuracy is {}%,".format(epoch, round(avg_test_acc*100), 4))
+				# print('\n\n\n',avg_test_acc,'\n\n\n')
+				logger.debug("  Epoch {} Test Accuracy is {}%,".format(epoch, round(float(avg_test_acc)*100), 4))
 
 				print(
 					f"====> Epoch: {epoch} Average train loss: {avg_test_loss :.4f} Average train accuracy: {avg_test_acc :.4f}\n"
