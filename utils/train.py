@@ -3,7 +3,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from transformers import AdamW, get_linear_schedule_with_warmup
 from datahelper import PostDataset, CommentDataset, get_indices
-from models import SentimentModel
+from models import SentimentModel, FineTuneBaseModel
 import yaml
 from tqdm import tqdm
 import argparse
