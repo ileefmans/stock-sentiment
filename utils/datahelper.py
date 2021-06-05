@@ -94,17 +94,18 @@ class PostDataset(torch.utils.data.Dataset):
             pad_to_max_length=True,
             return_attention_mask=True,
             return_tensors='pt',  # Return PyTorch tensors
+            truncation=True
             )
         
-        if target==0:
-            target = torch.Tensor([1, 0]).reshape(1,2)
-        else:
-            target = torch.Tensor([0, 1]).reshape(1,2)
+        # if target==0:
+        #     target = torch.Tensor([1, 0]).reshape(1,2)
+        # else:
+        #     target = torch.Tensor([0, 1]).reshape(1,2)
         return {
             'post': post,
             'post_input_ids': post_encoding['input_ids'].flatten(),
             'post_attention_mask': post_encoding['attention_mask'].flatten(),
-            'target': target
+            'target': torch.tensor(target, dtype=torch.long)
             }
 
 
@@ -133,17 +134,18 @@ class CommentDataset(torch.utils.data.Dataset):
             pad_to_max_length=True,
             return_attention_mask=True,
             return_tensors='pt',  # Return PyTorch tensors
+            truncation=True
             )
         
-        if target==0:
-            target = torch.Tensor([1, 0])
-        else:
-            target = torch.Tensor([0, 1])
+        # if target==0:
+        #     target = torch.Tensor([1, 0])
+        # else:
+        #     target = torch.Tensor([0, 1])
         return {
             'comment': comment,
             'comment_input_ids': comment_encoding['input_ids'].flatten(),
             'comment_attention_mask': comment_encoding['attention_mask'].flatten(),
-            'target': target
+            'target': torch.tensor(target, dtype=torch.long)
             }
 
 
