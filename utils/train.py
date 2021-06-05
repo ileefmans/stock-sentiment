@@ -125,6 +125,9 @@ class Train:
 			losses = []
 			accuracies = []
 
+		test_losses = []
+		test_accuracies = []
+
 		# Start Training Loop
 		for epoch in range(start_epoch, self.epochs+1):
 
@@ -223,8 +226,71 @@ class Train:
 				print("\nWeights Saved\n")
 
 				print(
-					f"====> Epoch: {epoch} Average train loss: {avg_loss :.4f}\n"
+					f"====> Epoch: {epoch} Average train loss: {avg_loss :.4f} Average train accuracy: {avg_acc :.4f}\n"
 					)
+
+			# Evaluate on Test set
+			with torch.no_grad():
+				# Set model to evaluation mode
+				self.model.eval()
+
+				epoch_test_loss = 0
+				total_epoch_test_acc = 0
+				for post_batch in tqdm(self.post_testloader, desc='Post Test Epoch {}'.format(epoch)):
+
+					# Send input ids and attention masks to device
+					post_input_ids = post_batch['post_input_ids'].to(self.device)
+					post_attention_masks = post_batch['post_attention_mask'].to(self.device)
+					post_targets = post_batch['target'].reshape(-1,2).to(self.device)
+
+					post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
+
+					# Calculate Loss
+					loss = loss_fcn(post_output, post_targets)
+
+					# Make Predictions
+					_, preds = torch.max(post_output, dim=1)
+					_, ground_truths = torch.max(post_targets, dim=1)
+
+					# Calculate Accuracy
+					acc = torch.sum(preds==ground_truths)/len(preds)
+
+					epoch_test_loss+=loss
+					total_epoch_test_acc+=acc
+
+				for comment_batch in tqdm(self.comment_testloader, desc='Comment Test Epoch {}'.format(epoch)):
+
+					# Send input ids and attention masks to device
+					comment_input_ids = comment_batch['comment_input_ids'].to(self.device)
+					comment_attention_masks = comment_batch['comment_attention_mask'].to(self.device)
+					comment_targets = comment_batch['target'].reshape(-1,2).to(self.device)
+
+					comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
+
+					# Calculate Loss
+					loss = loss_fcn(comment_output, comment_targets)
+
+					# Make Predictions
+					_, preds = torch.max(comment_output, dim=1)
+					_, ground_truths = torch.max(comment_targets, dim=1)
+
+					# Calculate Accuracy
+					acc = torch.sum(preds==ground_truths)/len(preds)
+
+					epoch_test_loss+=loss
+					total_epoch_test_acc+=acc
+
+				avg_test_loss = epoch_test_loss / (len(self.post_testloader.dataset)+len(self.comment_testloader.dataset))
+				test_losses.append(avg_test_loss)
+				avg_test_acc = total_epoch_test_acc / (len(self.post_testloader.dataset)+len(self.comment_testloader.dataset))
+				test_accuracies.append(avg_test_acc)
+
+				print(
+					f"====> Epoch: {epoch} Average train loss: {avg_test_loss :.4f} Average train accuracy: {avg_test_acc :.4f}\n"
+					)
+
+
+
 
 
 
@@ -237,6 +303,14 @@ class Train:
 			torch.save(
 				self.model, "{}.pt".format(self.config['model'])
 				)
+
+
+		return {
+				'train losses': losses,
+				'train accuracies': accuracies,
+				'test losses': test_losses,
+				'test accuracies': test_accuracies
+				}
 
 	def save_checkpoint(self, epoch, loss, accuracy):
 		if self.local:
