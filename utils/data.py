@@ -40,6 +40,9 @@ class Database:
             print("Database connection failed due to {}".format(e)) 
 
     def initialize_database(self):
+        """
+            Method initializing database
+        """
         sql1 = '''CREATE DATABASE DB1'''
         sql2 = '''USE DB1'''
         self.cur.execute(sql1)
@@ -47,10 +50,20 @@ class Database:
         return
 
     def use_database(self, database_name):
+        """
+            Method determining what database to use
+
+            Args:
+
+                database_name (str): Name of database to be used
+        """
         sql = '''USE {}'''.format(database_name)
         self.cur.execute(sql)
 
     def initialize_tables(self):
+        """
+            Method initializing tables
+        """
         sql1 = '''CREATE TABLE POSTS(
                 POST_ID CHAR(20) PRIMARY KEY NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
@@ -85,6 +98,14 @@ class Database:
         return
 
     def insert(self, table, data):
+        """
+            Method for inserting row into table
+
+            Args:
+
+                table (str): Table to be inserted into
+                data (list): List of data to be inserted into table
+        """
         if table == 'POSTS':
             sql = '''INSERT INTO POSTS (POST_ID, STOCK_ID, TITLE, SCORE, SUBREDDIT, URL, NUM_COMMENTS, BODY, TARGET, CREATED) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
@@ -116,6 +137,15 @@ class Database:
             raise Exception("Only 'POSTS', 'COMMENTS' or 'STOCKS' valid arguments for 'table'")
 
     def label(self, table_name, ID, label):
+        """
+            Method for labeling unlabeled posts and comments
+
+            Args:
+
+                table_name (str): Name of desired table
+                ID (str): ID of post or comment to be labeled
+                label (int): label of post or comment (either 1 or 0)
+        """
         if table_name=='POSTS':
             sql = "UPDATE POSTS SET TARGET={} WHERE POST_ID='{}';".format(label, ID)
         elif table_name=='COMMENTS':
@@ -127,22 +157,51 @@ class Database:
         return
 
     def update_last_scraped(self, stock_id):
+        """
+            Method to update Stock table to show the last time the stock was scraped
+
+            Args:
+
+                stock_id (str): Id of stock to update
+        """
         sql = "UPDATE STOCKS SET LAST_SCRAPED=NOW() WHERE STOCK_ID='{}';".format(stock_id)
         self.cur.execute(sql)
         self.conn.commit()
         return
 
     def query(self, sql):
+
+        """
+            Method ot query database
+
+            Args:
+
+                sql (str): SQL Statement
+        """
         self.cur.execute(sql)
         return self.cur.fetchall()
 
     def drop_table(self, table_name):
+        """
+            Method to drop table from database
+
+            Args:
+
+                table_name (str): Name of table to be dropped
+        """
         sql = '''DROP TABLE {} ;'''.format(table_name)
         self.cur.execute(sql)
         return
 
 
 def get_keys(website):
+    """
+        Helper fucntion to get passwords for external APIs
+
+        Args:
+
+            website (str): name of website
+    """
     with open("IDs.yml") as file:
         IDs = yaml.load(file, Loader=yaml.FullLoader)
     if website=="Reddit":
