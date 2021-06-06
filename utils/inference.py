@@ -2,17 +2,31 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from datahelper import PostDataset, CommentDataset, get_indices
+from data import Database
 from models import SentimentModel
 import yaml
 from tqdm import tqdm
 
 
 
-def pull():
+def pull(value, increment='HOUR'):
 
 	"""
 		Helper function that checks whether or not knew reddit comments and posts need to be scraped
+
+		Args:
+
+			value (int): 	Value of desired increment ex: if value=24 and increment='HOUR' rescrape if 
+							last scraping ocurred more than 24 hours ago
+			increment (str): Desired increment either 'HOUR' or 'DAY'
 	"""
+
+
+	db = Database()
+	db.use_database('DB1')
+	if len(db.query("SELECT * FROM STOCKS WHERE STOCK_ID='AMC' AND LAST_SCRAPED >= DATE_SUB(NOW(),INTERVAL {} {})".format(value, increment)))==0:
+		
+
 	pass
 
 
