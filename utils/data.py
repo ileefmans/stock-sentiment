@@ -57,7 +57,8 @@ class Database:
                 NUM_COMMENTS INT,
                 BODY TEXT,
                 TARGET INT,
-                CREATED FLOAT
+                CREATED FLOAT,
+                LAST_SCRAPED DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )'''
 
         sql2 = '''CREATE TABLE COMMENTS(
@@ -65,7 +66,8 @@ class Database:
                 POST_ID CHAR(20) NOT NULL,
                 STOCK_ID CHAR(20) NOT NULL,
                 TARGET INT,
-                COMMENT TEXT
+                COMMENT TEXT,
+                LAST_SCRAPED DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )'''
         sql3 = '''CREATE TABLE STOCKS(
                 STOCK_ID CHAR(20) PRIMARY KEY NOT NULL,
