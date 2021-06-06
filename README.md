@@ -29,6 +29,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
  
 ## SMALL TODO:           
   1) Add labels to db     
+  2) Finish pull helper function in inference script  
      
   
 ## Getting Started  
