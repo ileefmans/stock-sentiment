@@ -28,8 +28,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   7) Set up monitoring  
  
 ## SMALL TODO:           
-  1) Add labels to db   
-  2) Add last_scraped column to POSTS and COMMENTS     
+  1) Add labels to db     
      
   
 ## Getting Started  
