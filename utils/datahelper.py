@@ -6,6 +6,13 @@ from sklearn.model_selection import train_test_split
 
 
 def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0, inference=False, scrape_time=6):
+    """
+        Helper function to get comment and post indices to feed into custom PyTorch Datasets
+
+        Args:
+
+            stock_id (str): Symbol of desired stock
+    """
 	if inference:
 		db = Database()
 		db.use_database('DB1')
@@ -70,7 +77,16 @@ def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0, inference=Fal
 
 
 class PostDataset(torch.utils.data.Dataset):
+    """
+        Class for creating custom PyTorch Dataset for Posts
+    """
     def __init__(self, max_len, post_indices):
+        """
+            Args:
+
+                max_len (int):          maximum length for text fed into of Bert Tokenizer
+                post_indices (list):    List of post indices for posts to be pulled from Relational Database
+        """
         self.max_len = max_len
         self.tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
         self.db = Database()
@@ -97,10 +113,7 @@ class PostDataset(torch.utils.data.Dataset):
             truncation=True
             )
         
-        # if target==0:
-        #     target = torch.Tensor([1, 0]).reshape(1,2)
-        # else:
-        #     target = torch.Tensor([0, 1]).reshape(1,2)
+       
         return {
             'post': post,
             'post_input_ids': post_encoding['input_ids'].flatten(),
@@ -111,7 +124,16 @@ class PostDataset(torch.utils.data.Dataset):
 
 
 class CommentDataset(torch.utils.data.Dataset):
+    """
+        Class for creating custom PyTorch Dataset for Comments
+    """
     def __init__(self, max_len, comment_indices):
+        """
+            Args:
+
+                max_len (int):          maximum length for text fed into of Bert Tokenizer
+                post_indices (list):    List of comment indices for posts to be pulled from Relational Database                
+        """
         self.max_len = max_len
         self.tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
         self.db = Database()
@@ -137,10 +159,7 @@ class CommentDataset(torch.utils.data.Dataset):
             truncation=True
             )
         
-        # if target==0:
-        #     target = torch.Tensor([1, 0])
-        # else:
-        #     target = torch.Tensor([0, 1])
+        
         return {
             'comment': comment,
             'comment_input_ids': comment_encoding['input_ids'].flatten(),

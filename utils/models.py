@@ -6,6 +6,9 @@ from transformers import BertForSequenceClassification, BertModel
 
 
 class SentimentModel(nn.Module):
+	"""
+		Class for Pretrained (non finetuned) Sentiment Model
+	"""
 	def __init__(self):
 		super(SentimentModel, self).__init__()
 
@@ -17,6 +20,9 @@ class SentimentModel(nn.Module):
 
 
 class FineTuneBaseModel(nn.Module):
+	"""
+		Class for Sentiment Model fine-tuned from Bert Base
+	"""
 	def __init__(self):
 		super(FineTuneBaseModel, self).__init__()
 
@@ -31,8 +37,7 @@ class FineTuneBaseModel(nn.Module):
 									input_ids=input_ids, 
 									attention_mask = attention_masks
 		)
-		# print(type(output.pooler_output))
-		# print(output.pooler_output)
+		
 		
 		x = self.drop(output.pooler_output)
 		x = self.fc(x)

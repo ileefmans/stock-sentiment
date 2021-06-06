@@ -21,12 +21,18 @@ logger.addHandler(file_handler)
 
 
 def get_config():
+	"""
+		Helper function to get Training Configuration
+	"""
     with open("config.yml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     return config['Training']
 
 
 def get_args():
+	"""
+		Arg Parser
+	"""
 	parser = argparse.ArgumentParser(description="Model Options")
 	parser.add_argument(
 		"--local",
@@ -335,6 +341,9 @@ class Train:
 				}
 
 	def save_checkpoint(self, epoch, loss, accuracy):
+		"""
+			Method to save Training Checkpoint
+		"""
 		if self.local:
 			torch.save(
 				{
@@ -360,6 +369,10 @@ class Train:
 			)
 
 	def load_checkpoint(self):
+
+		"""
+			Method for loading Training Checkpoint
+		"""
 		if self.local:
 			checkpoint = torch.load("models/params/{}.tar".format(self.config['model']))
 		else:

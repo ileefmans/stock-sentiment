@@ -11,6 +11,10 @@ from tqdm import tqdm
 
 
 class Database:
+
+    """
+        Class for connecting to and manipulating relational database
+    """
     def __init__(self):
 
         # Open yml to get connectivity info
@@ -261,6 +265,10 @@ class ScrapeWSB:
 
 
 class Stock:
+
+    """
+        Class for pulling recent stock values
+    """
     def __init__(self):
 
 

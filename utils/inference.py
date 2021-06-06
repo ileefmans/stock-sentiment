@@ -17,6 +17,9 @@ def pull():
 
 
 def get_config():
+	"""
+		Helper function to get configuration
+	"""
     with open("config.yml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     return config['Inference']
