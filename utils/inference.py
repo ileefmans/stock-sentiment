@@ -26,7 +26,14 @@ class RunInference:
 	"""
 		Class for running inference to gather stock sentiment
 	"""
-	def __init__(self, stock_id):
+	def __init__(self, stock_id, scrape_time=6):
+		"""
+			Args:
+
+			 	stock_id (str): 	Symbol of stock to run inference on
+			 	scrape_time (int):	Interval of time prior to scraping timestamp from which to use 
+			 						comments and posts (Not meant to be externally manipulated)
+		"""
 
 		self.config = get_config()
 
@@ -38,7 +45,7 @@ class RunInference:
 
 		self.stock_id = stock_id
 
-		self.indices = get_indices(self.stock_id, inference=True)
+		self.indices = get_indices(self.stock_id, inference=True, scrape_time=scrape_time)
 
 		self.post_data = PostDataset(self.config['embedding_max_len'], 
 									 self.indices['post_ids']
