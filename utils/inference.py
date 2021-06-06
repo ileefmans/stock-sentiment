@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 
 
-def pull(value, increment='HOUR'):
+def pull(value, stock_id num_posts, num_comments, increment='HOUR'):
 
 	"""
 		Helper function that checks whether or not knew reddit comments and posts need to be scraped
@@ -24,10 +24,14 @@ def pull(value, increment='HOUR'):
 
 	db = Database()
 	db.use_database('DB1')
-	if len(db.query("SELECT * FROM STOCKS WHERE STOCK_ID='AMC' AND LAST_SCRAPED >= DATE_SUB(NOW(),INTERVAL {} {})".format(value, increment)))==0:
+	if len(db.query("SELECT * FROM STOCKS WHERE STOCK_ID='{}}' AND LAST_SCRAPED >= DATE_SUB(NOW(),INTERVAL {} {})".format(stock_id, value, increment)))==0:
 		
+		scrapewsb = ScrapeWSB(stock_id, num_posts, num_comments)
 
-	pass
+		df = scrapewsb.scrape()
+		scrapewsb.convert(df)
+
+	return
 
 
 def get_config():
