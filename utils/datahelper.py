@@ -89,8 +89,6 @@ class PostDataset(torch.utils.data.Dataset):
 		"""
 		self.max_len = max_len
 		self.tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-		self.db = Database()
-		self.db.use_database('DB1')
 		self.post_indices = post_indices
 		
 		# self.indexes = self.db.query('''SELECT POST_ID FROM POSTS;''')
@@ -100,7 +98,9 @@ class PostDataset(torch.utils.data.Dataset):
 		return len(self.post_indices)
 		
 	def __getitem__(self, index):
-		post_target = self.db.query("SELECT TITLE, TARGET FROM POSTS WHERE POST_ID='{}'".format(self.post_indices[index][0]))
+		db = Database()
+		db.use_database('DB1')
+		post_target = db.query("SELECT TITLE, TARGET FROM POSTS WHERE POST_ID='{}'".format(self.post_indices[index][0]))
 		post, target = post_target[0][0], post_target[0][1]
 		post_encoding = self.tokenizer.encode_plus(
 			post,
