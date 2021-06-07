@@ -24,9 +24,9 @@ def get_config():
 	"""
 		Helper function to get Training Configuration
 	"""
-    with open("config.yml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    return config['Training']
+	with open("config.yml") as file:
+		config = yaml.load(file, Loader=yaml.FullLoader)
+	return config['Training']
 
 
 def get_args():
