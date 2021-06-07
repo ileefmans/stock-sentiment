@@ -233,7 +233,7 @@ class Train:
 
 				avg_loss = epoch_train_loss / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
 				losses.append(avg_loss)
-				logger.debug("  Epoch {} Train Loss is {},".format(epoch, round(avg_loss,6)))
+				logger.debug("  Epoch {} Train Loss is {},".format(epoch, round(float(avg_loss),6)))
 				avg_acc = total_epoch_train_acc / (len(self.post_trainloader.dataset)+len(self.comment_trainloader.dataset))
 				logger.debug("  Epoch {} Train Accuracy is {}%,".format(epoch, round(float(avg_acc)*100, 4)))
 				accuracies.append(avg_acc)
@@ -306,7 +306,7 @@ class Train:
 
 				avg_test_loss = epoch_test_loss / (len(self.post_testloader.dataset)+len(self.comment_testloader.dataset))
 				test_losses.append(avg_test_loss)
-				logger.debug("  Epoch {} Test Loss is {},".format(epoch, round(avg_test_loss, 6)))
+				logger.debug("  Epoch {} Test Loss is {},".format(epoch, round(float(avg_test_loss), 6)))
 				avg_test_acc = total_epoch_test_acc / (len(self.post_testloader.dataset)+len(self.comment_testloader.dataset))
 				test_accuracies.append(avg_test_acc)
 				# print('\n\n\n',avg_test_acc,'\n\n\n')
