@@ -64,6 +64,10 @@ class RunInference:
 		if self.config['model']=='pretrained':
 			self.model = SentimentModel().to(self.device)
 
+		elif self.config['model']=='finetuned':
+			self.model = torch.load("models/finetuned.pt")
+			
+
 		self.stock_id = stock_id
 
 		self.indices = get_indices(self.stock_id, inference=True, scrape_time=scrape_time)
