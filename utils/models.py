@@ -43,3 +43,22 @@ class FineTuneBaseModel(nn.Module):
 		x = self.fc(x)
 		x = self.softmax(x)
 		return x
+
+
+
+
+class FineTuneClassifier(nn.Module):
+	"""
+		Class for Sentiment Model fine-tuned from Bert Sentiment Classifier
+	"""
+
+	def __init__(self):
+		super(FineTuneClassifier, self).__init__()
+
+		self.bert = BertForSequenceClassification.from_pretrained('bert-base-cased')
+
+	def forward(self, input_ids, attention_masks):
+
+		return self.bert(input_ids, attention_masks)
+
+
