@@ -36,7 +36,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   
 ## Getting Started  
   
-  **With Conda Environement**  
+  **With Conda Environment**  
   
   If you have not already, [download Anaconda](https://www.anaconda.com/products/individual/get-started).  
   
@@ -45,7 +45,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   1) ```git clone https://github.com/ileefmans/stock-sentiment```  
   2) ```cd stock-sentiment```  
   
-  Create and Activate Conda Environemnt:  
+  Create and Activate Conda Environment:  
   
   1) ```conda create --name StockSentiment python=3.7```  
   2) ```conda activate StockSentiment```  
