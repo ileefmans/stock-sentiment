@@ -100,9 +100,9 @@ class RunInference:
 				post_input_ids = post['post_input_ids'].to(self.device)
 				post_attention_masks = post['post_attention_mask'].to(self.device)
 
-				post_output = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
-				softmax = nn.Softmax(dim=1)
-				post_probs= softmax(post_output.logits)
+				post_probs = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
+				# softmax = nn.Softmax(dim=1)
+				# post_probs= softmax(post_output.logits)
 				total_post_probs += post_probs.mean(dim=0)
 
 			avg_post_probs = total_post_probs/len(self.post_dataloader)
@@ -113,9 +113,9 @@ class RunInference:
 				comment_input_ids = comment['comment_input_ids'].to(self.device)
 				comment_attention_masks = comment['comment_attention_mask'].to(self.device)
 
-				comment_output = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
-				softmax = nn.Softmax(dim=1)
-				comment_probs= softmax(comment_output.logits)
+				comment_probs = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
+				# softmax = nn.Softmax(dim=1)
+				# comment_probs= softmax(comment_output.logits)
 				total_comment_probs += comment_probs.mean(dim=0)
 
 			avg_comment_probs = total_comment_probs/len(self.comment_dataloader)
