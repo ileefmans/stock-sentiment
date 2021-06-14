@@ -11,7 +11,8 @@
 ![Huggingface](https://img.shields.io/badge/🤗%20Framework-Huggingface-9cf?color=royalblue)
 ![Cloud Computing](https://img.shields.io/badge/Cloud-AWS-orange&?style=flat&logo=Amazon-AWS&color=9cf)
 ![Database](https://img.shields.io/badge/Database-MySQL-informational&?style=flat&logo=MySQL&color=informational&logoColor=white)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-Travis%20CI-lightgrey?&style=flat&logo=Travis-CI&color=yellow&logoColor=yellow)  
+![CI/CD](https://img.shields.io/badge/CI%2FCD-Travis%20CI-lightgrey?&style=flat&logo=Travis-CI&color=yellow&logoColor=yellow)
+![Containerization](https://img.shields.io/badge/Containerization-Docker-blue?&logo=docker)  
 
 *Note that this app is in the middle stages of production*  
 This application scrapes Reddit to extract sentiment for a desired stock and then factors this information into predictions about the stocks future direction.
