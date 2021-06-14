@@ -3,7 +3,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from datahelper import PostDataset, CommentDataset, get_indices
 from data import Database, ScrapeWSB
-from models import SentimentModel
+from models import SentimentModel, FineTuneClassifier
 import yaml
 from tqdm import tqdm
 
@@ -62,7 +62,7 @@ class RunInference:
 		self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 		
 		if self.config['model']=='pretrained':
-			self.model = SentimentModel().to(self.device)
+			self.model = FineTuneClassifier().to(self.device)
 
 		elif self.config['model']=='finetuned':
 			self.model = torch.load("models/finetuned.pt")
@@ -96,6 +96,8 @@ class RunInference:
 		with torch.no_grad():
 
 			total_post_probs = torch.zeros([2])
+			first_post = True
+			all_post_probs = None
 			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
 				post_input_ids = post['post_input_ids'].to(self.device)
 				post_attention_masks = post['post_attention_mask'].to(self.device)
@@ -103,12 +105,19 @@ class RunInference:
 				post_probs = self.model(input_ids=post_input_ids, attention_masks=post_attention_masks)
 				# softmax = nn.Softmax(dim=1)
 				# post_probs= softmax(post_output.logits)
+				if first_post:
+					all_post_probs=post_probs
+					first_post=False
+				else:
+					all_post_probs = torch.cat((all_post_probs, post_probs), dim=0)
 				total_post_probs += post_probs.mean(dim=0)
 
 			avg_post_probs = total_post_probs/len(self.post_dataloader)
 
 
 			total_comment_probs = torch.zeros([2])
+			first_comment = True
+			all_comment_probs = None
 			for comment in tqdm(self.comment_dataloader, desc='Determining Sentiment From Comments: '):
 				comment_input_ids = comment['comment_input_ids'].to(self.device)
 				comment_attention_masks = comment['comment_attention_mask'].to(self.device)
@@ -116,13 +125,20 @@ class RunInference:
 				comment_probs = self.model(input_ids=comment_input_ids, attention_masks=comment_attention_masks)
 				# softmax = nn.Softmax(dim=1)
 				# comment_probs= softmax(comment_output.logits)
+				if first_comment:
+					all_comment_probs = comment_probs
+					first_comment = False
+				else:
+					all_comment_probs = torch.cat((all_comment_probs, comment_probs), dim=0)
 				total_comment_probs += comment_probs.mean(dim=0)
 
 			avg_comment_probs = total_comment_probs/len(self.comment_dataloader)
 
 
 			return {'avg_post_probs': avg_post_probs,
-					'avg_comment_probs': avg_comment_probs
+					'avg_comment_probs': avg_comment_probs,
+					'all_post_probs': all_post_probs,
+					'all_comment_probs': all_comment_probs
 					}
 
 
