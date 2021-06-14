@@ -54,7 +54,9 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   
   1) ``` conda deactivate```    
   
-  
+    
+    
+    
   **With Docker**  
   
   If you have not already, [install Docker](https://www.docker.com).  
