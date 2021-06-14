@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 
 
-def pull(value, stock_id num_posts, num_comments, increment='HOUR'):
+def pull(value, stock_id, num_posts, num_comments, increment='HOUR'):
 
 	"""
 		Helper function that checks whether or not knew reddit comments and posts need to be scraped
@@ -38,9 +38,9 @@ def get_config():
 	"""
 		Helper function to get configuration
 	"""
-    with open("config.yml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-    return config['Inference']
+	with open("config.yml") as file:
+		config = yaml.load(file, Loader=yaml.FullLoader)
+	return config['Inference']
 
 
 class RunInference:
@@ -51,9 +51,9 @@ class RunInference:
 		"""
 			Args:
 
-			 	stock_id (str): 	Symbol of stock to run inference on
-			 	scrape_time (int):	Interval of time prior to scraping timestamp from which to use 
-			 						comments and posts (Not meant to be externally manipulated)
+				stock_id (str): 	Symbol of stock to run inference on
+				scrape_time (int):	Interval of time prior to scraping timestamp from which to use 
+									comments and posts (Not meant to be externally manipulated)
 		"""
 
 		self.config = get_config()
