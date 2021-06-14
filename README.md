@@ -49,7 +49,10 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   
   1) ```conda create --name StockSentiment python=3.7```  
   2) ```conda activate StockSentiment```  
-  3) ```pip install -r requirements.txt```  
+  3) ```pip install -r requirements.txt```   
+  
+  Run App:  
+  1) ```streamlit run utils/app.py```   
 
   Deactivate Conda Environment:  
   
