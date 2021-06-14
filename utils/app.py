@@ -41,7 +41,11 @@ class App:
                 run_inference = RunInference(stock_id=self.stock_id)
                 inference_output = run_inference.evaluate()
 
-            
+                post_probs = inference_output['avg_post_probs']
+
+                comment_probs = inference_output['avg_comment_probs']
+
+                
 
 
 
