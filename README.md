@@ -61,9 +61,11 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   
   If you have not already, [install Docker](https://www.docker.com).  
   
-  1) Build Image:  
-  ```docker build -t app:1.0 -f Dockerfile .```  
-  2) Run Image:  
-  ```docker run -p 8501:8501 app:1.0```  
+  Build and Run Image:  
+  1) ```docker build -t app:1.0 -f Dockerfile .```    
+  2) ```docker run -p 8501:8501 app:1.0```  
   3) Type *"localhost:8501"* into internet browser   
+  
+  Stop Container:  
+  1) ```docker stop <container name>```
   
