@@ -56,9 +56,12 @@ class FineTuneClassifier(nn.Module):
 		super(FineTuneClassifier, self).__init__()
 
 		self.bert = BertForSequenceClassification.from_pretrained('bert-base-cased')
+		self.softmax = nn.Softmax(dim=1)
 
 	def forward(self, input_ids, attention_masks):
 
-		return self.bert(input_ids, attention_masks)
+		x = self.bert(input_ids, attention_masks)
+		x = self.softmax(x.logits)
+		return x
 
 
