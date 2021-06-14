@@ -1,8 +1,27 @@
 import streamlit as st
-from utils import data, datahelper
-#from utils import datahelper
+from inference import pull, RunInference
 
-#config = get_config()
 
-#print(config)
+
+
+
+
+
+class App:
+	"""
+		Class for primary application
+	"""
+	def __init__(self):
+		pass
+
+
+
+
+
+
+
+if __name__ == '__main__':
+	app = App()
+
+
 
