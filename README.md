@@ -29,9 +29,8 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
  
 ## SMALL TODO:           
   1) Add labels to db    
-  2) Fix connection to db during training   
-  3) Train w/ EC2  
-  4) Finish pull helper function in inference script  
+  2) Fix connection to db during training (only an issue training locally)     
+  3) Train w/ EC2    
      
   
 ## Getting Started  
