@@ -31,6 +31,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   1) Add labels to db    
   2) Fix connection to db during training (only an issue training locally)     
   3) Train w/ EC2    
+  4) Edit Inference script to get all predicted probabilities for more dynamic visuals  
      
   
 ## Getting Started  
