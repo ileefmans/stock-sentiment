@@ -69,26 +69,29 @@ class App:
                 all_comment_probs = inference_output['all_comment_probs']
 
 
-                col1, col2 = st.beta_columns(2)
-
-                col1.pyplot(self.density_plot(
-                    data=all_post_probs, 
-                    title="Density Plot of Post Probabilities", 
-                    xlabel='Probability of Positive Sentiment'
-                    )
-                )
-
-                col2.pyplot(self.density_plot(
-                    data = all_comment_probs,
-                    title = "Density Plot of Comment Probabilities",
-                    xlabel = 'Probability of Positive Sentiment'
-                    )
-                )
-
-                my_expander = st.beta_expander("Summary Stats")
+                my_expander = st.beta_expander("Density Plot of Sentiment")
 
                 with my_expander:
-                    st.text("Stats go here")
+                    st.text("")
+                    
+
+                    col1, col2 = st.beta_columns(2)
+
+                    col1.pyplot(self.density_plot(
+                        data=all_post_probs, 
+                        title="Density Plot of Post Probabilities", 
+                        xlabel='Probability of Positive Sentiment'
+                        )
+                    )
+
+                    col2.pyplot(self.density_plot(
+                        data = all_comment_probs,
+                        title = "Density Plot of Comment Probabilities",
+                        xlabel = 'Probability of Positive Sentiment'
+                        )
+                    )
+
+                    
 
 
 
