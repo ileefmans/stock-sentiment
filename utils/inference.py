@@ -78,19 +78,27 @@ class RunInference:
 		self.comment_data = CommentDataset(self.config['embedding_max_len'], 
 										   self.indices['comment_ids']
 										   )
-
-		self.post_dataloader = DataLoader(dataset=self.post_data, 
-									 batch_size=self.config['batch_size'], 
-									 num_workers=self.config['num_workers'],
-									 shuffle=self.config['shuffle']
-									 )
-		self.comment_dataloader = DataLoader(dataset=self.comment_data, 
-									 batch_size=self.config['batch_size'], 
-									 num_workers=self.config['num_workers'],
-									 shuffle=self.config['shuffle']
-									 )
+		self.stop = False
+		if len(self.post_data)>3:
+			self.post_dataloader = DataLoader(dataset=self.post_data, 
+										 batch_size=self.config['batch_size'], 
+										 num_workers=self.config['num_workers'],
+										 shuffle=self.config['shuffle']
+										 )
+		else:
+			self.stop = True
+		if len(self.comment_data)>3:
+			self.comment_dataloader = DataLoader(dataset=self.comment_data, 
+										 batch_size=self.config['batch_size'], 
+										 num_workers=self.config['num_workers'],
+										 shuffle=self.config['shuffle']
+										 )
+		else:
+			self.stop = True
 
 	def evaluate(self):
+		if self.stop:
+			return None
 
 		# Set model to evaluate
 		with torch.no_grad():
