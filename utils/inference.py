@@ -79,7 +79,7 @@ class RunInference:
 										   self.indices['comment_ids']
 										   )
 		self.stop = False
-		if len(self.post_data)>3:
+		if len(self.post_data)>2:
 			self.post_dataloader = DataLoader(dataset=self.post_data, 
 										 batch_size=self.config['batch_size'], 
 										 num_workers=self.config['num_workers'],
@@ -87,7 +87,7 @@ class RunInference:
 										 )
 		else:
 			self.stop = True
-		if len(self.comment_data)>3:
+		if len(self.comment_data)>2:
 			self.comment_dataloader = DataLoader(dataset=self.comment_data, 
 										 batch_size=self.config['batch_size'], 
 										 num_workers=self.config['num_workers'],
