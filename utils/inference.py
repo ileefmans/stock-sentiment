@@ -106,6 +106,8 @@ class RunInference:
 			total_post_probs = torch.zeros([2])
 			first_post = True
 			all_post_probs = None
+			max_post_prob = 0
+			max_post = None
 			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
 				post_input_ids = post['post_input_ids'].to(self.device)
 				post_attention_masks = post['post_attention_mask'].to(self.device)
@@ -120,12 +122,20 @@ class RunInference:
 					all_post_probs = torch.cat((all_post_probs, post_probs), dim=0)
 				total_post_probs += post_probs.mean(dim=0)
 
+				# Get maximum post probability and corresponding post
+				max_prob = float(post_probs[:,1].max())
+				if max_prob>max_post_prob:
+					max_post_prob = max_prob
+					max_post = post['post'][int(post_probs[:,1].argmax())]
+
 			avg_post_probs = total_post_probs/len(self.post_dataloader)
 
 
 			total_comment_probs = torch.zeros([2])
 			first_comment = True
 			all_comment_probs = None
+			max_comment_prob = 0
+			max_comment = None
 			for comment in tqdm(self.comment_dataloader, desc='Determining Sentiment From Comments: '):
 				comment_input_ids = comment['comment_input_ids'].to(self.device)
 				comment_attention_masks = comment['comment_attention_mask'].to(self.device)
@@ -140,13 +150,23 @@ class RunInference:
 					all_comment_probs = torch.cat((all_comment_probs, comment_probs), dim=0)
 				total_comment_probs += comment_probs.mean(dim=0)
 
+				# Get maximum comment probability and corresponding comment
+				max_prob = float(comment_probs[:,1].max())
+				if max_prob>max_comment_prob:
+					max_comment_prob = max_prob
+					max_comment = comment['comment'][int(comment_probs[:,1].argmax())]
+
 			avg_comment_probs = total_comment_probs/len(self.comment_dataloader)
 
 
 			return {'avg_post_probs': avg_post_probs,
 					'avg_comment_probs': avg_comment_probs,
 					'all_post_probs': all_post_probs,
-					'all_comment_probs': all_comment_probs
+					'all_comment_probs': all_comment_probs,
+					'max_post_prob': max_post_prob,
+					'max_comment_prob': max_comment_prob,
+					'max_post': max_post,
+					'max_comment': max_comment
 					}
 
 
