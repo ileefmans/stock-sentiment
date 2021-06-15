@@ -3,7 +3,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from transformers import AdamW, get_linear_schedule_with_warmup
 from datahelper import PostDataset, CommentDataset, get_indices
-from models import SentimentModel, FineTuneBaseModel
+from models import FineTuneClassifier, FineTuneBaseModel
 import yaml
 from tqdm import tqdm
 import argparse
@@ -69,7 +69,7 @@ class Train:
 		self.batch_size = self.config['batch_size']
 
 		if self.config['model']=='pretrained':
-			self.model = SentimentModel().to(self.device)
+			self.model = FineTuneClassifier().to(self.device)
 		elif self.config['model'] == 'finetuned':
 			self.model = FineTuneBaseModel().to(self.device)
 
