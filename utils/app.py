@@ -68,12 +68,23 @@ class App:
                 all_post_probs = inference_output['all_post_probs']
                 all_comment_probs = inference_output['all_comment_probs']
 
+                cola, colb = st.beta_columns(2)
+                cola.markdown("#### Most Positive Post: \n\n{}".format(inference_output['max_post']))
+                cola.markdown(f"#### Predicted Probability of Being positive: \n\n{round(inference_output['max_post_prob'], 4)}")
 
-                my_expander = st.beta_expander("Density Plot of Sentiment")
+                colb.markdown("#### Most Positive Comment: \n\n{}".format(inference_output['max_comment']))
+                colb.markdown(f"#### Predicted Probability of Being positive: \n\n{round(inference_output['max_comment_prob'], 4)}")
+
+
+                # colb.markdown("#### Maximum Predicted Positive Sentiment Probability (Comment): {}".format(inference_output['max_comment_prob']))
+                # colb.text(f"{inference_output['max_comment']}")
+
+
+                my_expander = st.beta_expander("Show Density Plot of Sentiment")
 
                 with my_expander:
                     st.text("")
-                    
+
 
                     col1, col2 = st.beta_columns(2)
 
