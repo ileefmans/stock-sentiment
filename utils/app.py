@@ -85,6 +85,10 @@ class App:
                     )
                 )
 
+                my_expander = st.beta_expander("Summary Stats")
+
+                with my_expander:
+                    st.text("Stats go here")
 
 
 
