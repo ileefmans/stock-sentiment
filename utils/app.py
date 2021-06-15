@@ -69,14 +69,16 @@ class App:
                 all_comment_probs = inference_output['all_comment_probs']
 
 
-                st.pyplot(self.density_plot(
+                col1, col2 = st.beta_columns(2)
+
+                col1.pyplot(self.density_plot(
                     data=all_post_probs, 
                     title="Density Plot of Post Probabilities", 
                     xlabel='Probability of Positive Sentiment'
                     )
                 )
 
-                st.pyplot(self.density_plot(
+                col2.pyplot(self.density_plot(
                     data = all_comment_probs,
                     title = "Density Plot of Comment Probabilities",
                     xlabel = 'Probability of Positive Sentiment'
