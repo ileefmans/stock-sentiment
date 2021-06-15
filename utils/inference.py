@@ -3,7 +3,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from datahelper import PostDataset, CommentDataset, get_indices
 from data import Database, ScrapeWSB
-from models import SentimentModel, FineTuneClassifier
+from models import FineTuneClassifier
 import yaml
 from tqdm import tqdm
 
