@@ -108,7 +108,8 @@ class PostDataset(torch.utils.data.Dataset):
 			max_length=self.max_len,
 			add_special_tokens=True, # Add '[CLS]' and '[SEP]'
 			return_token_type_ids=False,
-			pad_to_max_length=True,
+			#pad_to_max_length=True,
+			padding='max_length',
 			return_attention_mask=True,
 			return_tensors='pt',  # Return PyTorch tensors
 			truncation=True
@@ -154,7 +155,8 @@ class CommentDataset(torch.utils.data.Dataset):
 			max_length=self.max_len,
 			add_special_tokens=True, # Add '[CLS]' and '[SEP]'
 			return_token_type_ids=False,
-			pad_to_max_length=True,
+			#pad_to_max_length=True,
+			padding='max_length',
 			return_attention_mask=True,
 			return_tensors='pt',  # Return PyTorch tensors
 			truncation=True
