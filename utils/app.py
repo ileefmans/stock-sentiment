@@ -18,7 +18,6 @@ class App:
     def __init__(self):
         st.title('**Stock Sentiment**')
         st.markdown(""" #### Application for scraping redit for metrics and visualizations regarding sentiment towards a particular stock """)
-        #st.text("IMPORTANT: You must set sentiment to 'select sentiment' when choosing 'POSTS' or 'COMMENTS'")
         st.text("")
         st.text("")
         st.text("")
