@@ -72,8 +72,15 @@ class App:
 
                 st.pyplot(self.density_plot(
                     data=all_post_probs, 
-                    title="Density Plot of Probabilities", 
+                    title="Density Plot of Post Probabilities", 
                     xlabel='Probability of Positive Sentiment'
+                    )
+                )
+
+                st.pyplot(self.density_plot(
+                    data = all_comment_probs,
+                    title = "Density Plot of Comment Probabilities",
+                    xlabel = 'Probability of Positive Sentiment'
                     )
                 )
 
