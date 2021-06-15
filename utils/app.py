@@ -60,18 +60,22 @@ class App:
             with st.spinner("Running inference..."):
                 run_inference = RunInference(stock_id=self.stock_id)
                 inference_output = run_inference.evaluate()
+            if not inference_output:
+                st.text("Not enough recent posts")
+            else:
+
                 post_probs = inference_output['avg_post_probs']
                 comment_probs = inference_output['avg_comment_probs']
                 all_post_probs = inference_output['all_post_probs']
                 all_comment_probs = inference_output['all_comment_probs']
 
 
-            st.pyplot(self.density_plot(
-                data=all_post_probs, 
-                title="Density Plot of Probabilities", 
-                xlabel='Probability of Positive Sentiment'
+                st.pyplot(self.density_plot(
+                    data=all_post_probs, 
+                    title="Density Plot of Probabilities", 
+                    xlabel='Probability of Positive Sentiment'
+                    )
                 )
-            )
 
 
 
