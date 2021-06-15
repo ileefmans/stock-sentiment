@@ -108,6 +108,8 @@ class RunInference:
 			all_post_probs = None
 			max_post_prob = 0
 			max_post = None
+			min_post_prob = 100
+			min_post = None
 			for post in tqdm(self.post_dataloader, desc='Determining Sentiment From Posts: '):
 				post_input_ids = post['post_input_ids'].to(self.device)
 				post_attention_masks = post['post_attention_mask'].to(self.device)
@@ -128,6 +130,12 @@ class RunInference:
 					max_post_prob = max_prob
 					max_post = post['post'][int(post_probs[:,1].argmax())]
 
+				# Get minimum post probability and corresponding post
+				min_prob = float(post_probs[:,1].min())
+				if min_prob>min_post_prob:
+					min_post_prob = min_prob
+					min_post = post['post'][int(post_probs[:,1].argmin())]
+
 			avg_post_probs = total_post_probs/len(self.post_dataloader)
 
 
@@ -136,6 +144,8 @@ class RunInference:
 			all_comment_probs = None
 			max_comment_prob = 0
 			max_comment = None
+			min_comment_prob = 0
+			min_comment = None
 			for comment in tqdm(self.comment_dataloader, desc='Determining Sentiment From Comments: '):
 				comment_input_ids = comment['comment_input_ids'].to(self.device)
 				comment_attention_masks = comment['comment_attention_mask'].to(self.device)
@@ -156,6 +166,12 @@ class RunInference:
 					max_comment_prob = max_prob
 					max_comment = comment['comment'][int(comment_probs[:,1].argmax())]
 
+				# Get minimum comment probability and corresponding comment
+				min_prob = float(comment_probs[:,1].min())
+				if min_prob>min_comment_prob:
+					min_comment_prob = min_prob
+					min_comment = comment['comment'][int(comment_probs[:,1].argmin())]
+
 			avg_comment_probs = total_comment_probs/len(self.comment_dataloader)
 
 
@@ -166,7 +182,11 @@ class RunInference:
 					'max_post_prob': max_post_prob,
 					'max_comment_prob': max_comment_prob,
 					'max_post': max_post,
-					'max_comment': max_comment
+					'max_comment': max_comment,
+					'min_post_prob': min_post_prob,
+					'min_comment_prob': min_comment_prob,
+					'min_post': min_post,
+					'min_comment': min_comment
 					}
 
 
