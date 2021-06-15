@@ -18,7 +18,7 @@ def get_indices(stock_id, train=.7, test=.3, val_set=False, val=0, inference=Fal
 		db.use_database('DB1')
 		post_ids = db.query("SELECT POST_ID FROM POSTS WHERE STOCK_ID='{}' AND LAST_SCRAPED >= DATE_SUB((SELECT LAST_SCRAPED FROM STOCKS WHERE STOCK_ID = '{}'), INTERVAL {} HOUR)".format(stock_id, stock_id, scrape_time))
 		comment_ids = db.query("SELECT COMMENT_ID FROM COMMENTS WHERE STOCK_ID='{}' AND LAST_SCRAPED >= DATE_SUB((SELECT LAST_SCRAPED FROM STOCKS WHERE STOCK_ID = '{}'), INTERVAL {} HOUR)".format(stock_id, stock_id, scrape_time))
-
+		
 		return {'post_ids': post_ids,
 			'comment_ids': comment_ids}
 
