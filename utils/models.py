@@ -5,18 +5,6 @@ from transformers import BertForSequenceClassification, BertModel
 
 
 
-class SentimentModel(nn.Module):
-	"""
-		Class for Pretrained (non finetuned) Sentiment Model
-	"""
-	def __init__(self):
-		super(SentimentModel, self).__init__()
-
-		self.bert = BertForSequenceClassification.from_pretrained('bert-base-cased')
-
-	def forward(self, input_ids, attention_masks):
-
-		return self.bert(input_ids, attention_masks)
 
 
 class FineTuneBaseModel(nn.Module):
