@@ -84,10 +84,10 @@ class App:
                     st.text("")
                     colc, cold = st.beta_columns(2)
                     colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
-                    colc.markdown(f"#### Predicted Probability of Being negative: \n\n{round(inference_output['min_post_prob'], 4)}")
+                    colc.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_post_prob'], 4)}")
 
                     cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
-                    cold.markdown(f"#### Predicted Probability of Being negative: \n\n{round(inference_output['min_comment_prob'], 4)}")
+                    cold.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_comment_prob'], 4)}")
 
 
 
