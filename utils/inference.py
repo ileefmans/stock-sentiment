@@ -132,7 +132,7 @@ class RunInference:
 
 				# Get minimum post probability and corresponding post
 				min_prob = float(post_probs[:,1].min())
-				if min_prob>min_post_prob:
+				if min_prob<min_post_prob:
 					min_post_prob = min_prob
 					min_post = post['post'][int(post_probs[:,1].argmin())]
 
@@ -168,7 +168,7 @@ class RunInference:
 
 				# Get minimum comment probability and corresponding comment
 				min_prob = float(comment_probs[:,1].min())
-				if min_prob>min_comment_prob:
+				if min_prob<min_comment_prob:
 					min_comment_prob = min_prob
 					min_comment = comment['comment'][int(comment_probs[:,1].argmin())]
 
