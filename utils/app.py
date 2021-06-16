@@ -69,7 +69,7 @@ class App:
                 all_comment_probs = inference_output['all_comment_probs']
 
                 my_expander1 = st.beta_expander("Positive Examples")
-                with my expander1:
+                with my_expander1:
                     st.text("")
                     cola, colb = st.beta_columns(2)
                     cola.markdown("#### Most Positive Post: \n\n{}".format(inference_output['max_post']))
@@ -79,10 +79,20 @@ class App:
                     colb.markdown(f"#### Predicted Probability of Being positive: \n\n{round(inference_output['max_comment_prob'], 4)}")
 
 
-
-                my_expander2 = st.beta_expander("Show Density Plot of Sentiment")
-
+                my_expander2 = st.beta_expander("Negative Examples")
                 with my_expander2:
+                    st.text("")
+                    colc, cold = st.beta_columns(2)
+                    colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
+                    colc.markdown(f"#### Predicted Probability of Being negative: \n\n{round(inference_output['min_post_prob'], 4)}")
+
+                    cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
+                    cold.markdown(f"#### Predicted Probability of Being negative: \n\n{round(inference_output['min_comment_prob'], 4)}")
+
+
+
+                my_expander3 = st.beta_expander("Show Density Plot of Sentiment")
+                with my_expander3:
                     st.text("")
 
 
