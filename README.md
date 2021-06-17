@@ -33,6 +33,11 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   2) Fix connection to db during training (only an issue training locally)     
   3) Train w/ EC2        
   4) Add caching for app  
+
+
+## Overview  
+
+<img src="https://github.com/ileefmans/stock-sentiment/blob/master/media/app_screenshot.jpg" width=700 align=center>
   
 ## Getting Started  
   
