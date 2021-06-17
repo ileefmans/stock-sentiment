@@ -97,15 +97,15 @@ class App:
                 my_expander2 = st.beta_expander("Negative Examples")
                 with my_expander2:
                     st.text("")
-                    example = st.multiselect("Display Example", ['Post', 'Comment'])
+                    # example = st.multiselect("Display Example", ['Post', 'Comment'])
                     st.text("")
                     colc, cold = st.beta_columns(2)
-                    if 'Post' in example:
-                        colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
-                        colc.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_post_prob'], 4)}")
-                    if 'Comment' in example:
-                        cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
-                        cold.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_comment_prob'], 4)}")
+                    # if 'Post' in example:
+                    colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
+                    colc.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_post_prob'], 4)}")
+                    # if 'Comment' in example:
+                    cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
+                    cold.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_comment_prob'], 4)}")
 
 
 
