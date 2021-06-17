@@ -37,6 +37,8 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 
 ## Overview  
 
+Stock Sentiment is an webapp that gives real-time predictions and visualizations which capture the prevailing sentiment towards a particular stock on Reddit. Stock Sentiment's interface allows you to choose a stock and set the application to either "Visualization" mode or "Prediction" mode. As shown below in an example of "Visualization" mode, Stock Sentiment provides a host of visuals such as plots showing the predicted sentiment of all comments and posts scraped from Reddit within the past 48 hours. In additon, Stock Sentiment provides examples of posts and comments classified as "positive" or "negative" with extreme confidence.
+
 <p>
 <img src="https://github.com/ileefmans/stock-sentiment/blob/main/media/app_screenshot.png" width=700 align=center />  
 </p>
