@@ -26,7 +26,8 @@ class App:
         self.stock_id = st.sidebar.text_input("Stock Symbol")
         self.mode = st.sidebar.selectbox("Mode", ['*choose mode','Visualization', 'Prediction'], index=0)
         self.go = st.sidebar.button("Go")
-           
+        
+
 
     def density_plot(self, data, title, xlabel):
         plt.style.use('dark_background')
@@ -68,6 +69,7 @@ class App:
             with st.spinner("Running inference..."):
                 run_inference = RunInference(stock_id=self.stock_id)
                 inference_output = run_inference.evaluate()
+                
             if not inference_output:
                 st.text("Not enough recent posts")
             else:
