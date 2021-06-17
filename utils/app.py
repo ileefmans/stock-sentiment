@@ -15,14 +15,14 @@ class App:
     """
         Class for primary application
     """
-    def __init__(self):
+    def __init__(self, testing_env=False):
         st.title('**Stock Sentiment**')
         st.markdown(""" #### Application for scraping redit for metrics and visualizations regarding sentiment towards a particular stock """)
         st.text("")
         st.text("")
         st.text("")
 
-
+        self.testing_env = testing_env
         self.stock_id = st.sidebar.text_input("Stock Symbol")
         self.mode = st.sidebar.selectbox("Mode", ['*choose mode','Visualization', 'Prediction'], index=0)
         self.go = st.sidebar.button("Go")
@@ -48,13 +48,22 @@ class App:
     def run(self):
         if self.go:
             with st.spinner("Checking to see if database needs to be updated..."):
-                pull(
-                    value=48, 
-                    stock_id=self.stock_id, 
-                    num_posts=10, 
-                    num_comments=5, 
-                    increment='HOUR'
-                )
+                if self.testing_env:
+                    pull(
+                        value=48,
+                        stock_id=self.stock_id,
+                        num_posts=5,
+                        num_comments=1,
+                        increment='HOUR'
+                        )
+                else:
+                    pull(
+                        value=48, 
+                        stock_id=self.stock_id, 
+                        num_posts=10, 
+                        num_comments=5, 
+                        increment='HOUR'
+                        )
 
             with st.spinner("Running inference..."):
                 run_inference = RunInference(stock_id=self.stock_id)
@@ -82,12 +91,15 @@ class App:
                 my_expander2 = st.beta_expander("Negative Examples")
                 with my_expander2:
                     st.text("")
+                    example = st.multiselect("Display Example", ['Post', 'Comment'])
+                    st.text("")
                     colc, cold = st.beta_columns(2)
-                    colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
-                    colc.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_post_prob'], 4)}")
-
-                    cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
-                    cold.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_comment_prob'], 4)}")
+                    if 'Post' in example:
+                        colc.markdown("#### Most Negative Post: \n\n{}".format(inference_output['min_post']))
+                        colc.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_post_prob'], 4)}")
+                    if 'Comment' in example:
+                        cold.markdown("#### Most Negative Comment: \n\n{}".format(inference_output['min_comment']))
+                        cold.markdown(f"#### Predicted Probability of Being Positive: \n\n{round(inference_output['min_comment_prob'], 4)}")
 
 
 
