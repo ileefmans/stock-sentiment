@@ -61,11 +61,11 @@ class RunInference:
 
 		self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 		
-		if self.config['model']=='pretrained':
+		if self.config['model']=='classifier':
 			self.model = FineTuneClassifier().to(self.device)
 
-		elif self.config['model']=='finetuned':
-			self.model = torch.load("models/finetuned.pt")
+		elif self.config['model']=='base':
+			self.model = torch.load("models/base.pt")
 			
 
 		self.stock_id = stock_id

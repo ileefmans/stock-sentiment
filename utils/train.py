@@ -68,9 +68,9 @@ class Train:
 		# Batch Size
 		self.batch_size = self.config['batch_size']
 
-		if self.config['model']=='pretrained':
+		if self.config['model']=='classifier':
 			self.model = FineTuneClassifier().to(self.device)
-		elif self.config['model'] == 'finetuned':
+		elif self.config['model'] == 'base':
 			self.model = FineTuneBaseModel().to(self.device)
 
 		self.indices = get_indices("no_stock_id")
