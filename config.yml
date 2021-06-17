@@ -1,6 +1,6 @@
 Training:
   embedding_max_len: 512
-  model: finetuned
+  model: base
   batch_size: 10
   num_workers: 0
   shuffle: True
@@ -9,7 +9,7 @@ Training:
 
 Inference:
   embedding_max_len: 512
-  model: pretrained
+  model: base
   batch_size: 25
   num_workers: 0
   shuffle: True
