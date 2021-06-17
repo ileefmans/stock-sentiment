@@ -90,9 +90,9 @@ class App:
             #             increment='HOUR'
             #             )
 
-            with st.spinner("Running inference..."):
-                run_inference = RunInference(stock_id=self.stock_id)
-                inference_output = run_inference.evaluate()
+            # with st.spinner("Running inference..."):
+            #     run_inference = RunInference(stock_id=self.stock_id)
+            #     inference_output = run_inference.evaluate()
                 
             if not inference_output:
                 st.text("Not enough recent posts")
