@@ -109,7 +109,7 @@ class App:
 
 
 
-                my_expander3 = st.beta_expander("Show Density Plot of Sentiment")
+                my_expander3 = st.beta_expander("Density Plot of Sentiment")
                 with my_expander3:
                     st.text("")
 
