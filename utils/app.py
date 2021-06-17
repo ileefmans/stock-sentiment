@@ -133,7 +133,7 @@ class App:
 
 
 if __name__ == '__main__':
-    app = App()
+    app = App(testing_env=True)
     app.run()
 
 
