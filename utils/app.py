@@ -43,28 +43,52 @@ class App:
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         return fig
-
-
+        
+    @st.cache(suppress_st_warning=True)
+    def infer(self):
+        with st.spinner("Checking to see if database needs to be updated..."):
+            if self.testing_env:
+                pull(
+                    value=48,
+                    stock_id=self.stock_id,
+                    num_posts=5,
+                    num_comments=1,
+                    increment='HOUR'
+                    )
+            else:
+                pull(
+                    value=48, 
+                    stock_id=self.stock_id, 
+                    num_posts=10, 
+                    num_comments=5, 
+                    increment='HOUR'
+                    )
+        with st.spinner("Running inference..."):
+            run_inference = RunInference(stock_id=self.stock_id)
+            inference_output = run_inference.evaluate()
+        return inference_output
 
     def run(self):
         if self.go:
-            with st.spinner("Checking to see if database needs to be updated..."):
-                if self.testing_env:
-                    pull(
-                        value=48,
-                        stock_id=self.stock_id,
-                        num_posts=5,
-                        num_comments=1,
-                        increment='HOUR'
-                        )
-                else:
-                    pull(
-                        value=48, 
-                        stock_id=self.stock_id, 
-                        num_posts=10, 
-                        num_comments=5, 
-                        increment='HOUR'
-                        )
+
+            inference_output = self.infer()
+            # with st.spinner("Checking to see if database needs to be updated..."):
+            #     if self.testing_env:
+            #         pull(
+            #             value=48,
+            #             stock_id=self.stock_id,
+            #             num_posts=5,
+            #             num_comments=1,
+            #             increment='HOUR'
+            #             )
+            #     else:
+            #         pull(
+            #             value=48, 
+            #             stock_id=self.stock_id, 
+            #             num_posts=10, 
+            #             num_comments=5, 
+            #             increment='HOUR'
+            #             )
 
             with st.spinner("Running inference..."):
                 run_inference = RunInference(stock_id=self.stock_id)
