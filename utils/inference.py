@@ -65,7 +65,7 @@ class RunInference:
 			self.model = FineTuneClassifier().to(self.device)
 
 		elif self.config['model']=='base':
-			self.model = torch.load("models/base.pt")
+			self.model = torch.load("models/base.pt").to(self.device)
 			
 
 		self.stock_id = stock_id
