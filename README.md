@@ -37,7 +37,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
 
 ## Overview  
 
-![app_screenshot](https://github.com/ileefmans/stock-sentiment/blob/master/media/app_screenshot.png)
+<img src="https://github.com/ileefmans/stock-sentiment/blob/master/media/app_screenshot.png", width=700 />
   
 ## Getting Started  
   
