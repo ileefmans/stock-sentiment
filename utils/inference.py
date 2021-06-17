@@ -42,6 +42,19 @@ def get_config():
 		config = yaml.load(file, Loader=yaml.FullLoader)
 	return config['Inference']
 
+def get_args():
+	"""
+		Arg Parser
+	"""
+	parser = argparse.ArgumentParser(description="Model Options")
+	parser.add_argument(
+		"--local",
+		type=bool,
+		default=True,
+		help="True if running on local machine, False if running on AWS",
+		)
+	return parser.parse_args()
+
 
 class RunInference:
 	"""
@@ -56,6 +69,8 @@ class RunInference:
 									comments and posts (Not meant to be externally manipulated)
 		"""
 
+		self.ops = get_args()
+		self.local = self.ops.local
 		self.config = get_config()
 
 
@@ -65,7 +80,10 @@ class RunInference:
 			self.model = FineTuneClassifier().to(self.device)
 
 		elif self.config['model']=='base':
-			self.model = torch.load("models/base.pt").to(self.device)
+			if self.local:
+				self.model = torch.load("models/base.pt", map_location=torch.device('cpu') ).to(self.device)
+			else:
+				self.model = torch.load("models/base.pt").to(self.device)
 			
 
 		self.stock_id = stock_id
