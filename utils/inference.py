@@ -6,6 +6,7 @@ from data import Database, ScrapeWSB
 from models import FineTuneClassifier
 import yaml
 from tqdm import tqdm
+import argparse
 
 
 
@@ -42,25 +43,25 @@ def get_config():
 		config = yaml.load(file, Loader=yaml.FullLoader)
 	return config['Inference']
 
-def get_args():
-	"""
-		Arg Parser
-	"""
-	parser = argparse.ArgumentParser(description="Model Options")
-	parser.add_argument(
-		"--local",
-		type=bool,
-		default=True,
-		help="True if running on local machine, False if running on AWS",
-		)
-	return parser.parse_args()
+# def get_args():
+# 	"""
+# 		Arg Parser
+# 	"""
+# 	parser = argparse.ArgumentParser(description="Model Options")
+# 	parser.add_argument(
+# 		"--local",
+# 		type=bool,
+# 		default=True,
+# 		help="True if running on local machine, False if running on AWS",
+# 		)
+# 	return parser.parse_args()
 
 
 class RunInference:
 	"""
 		Class for running inference to gather stock sentiment
 	"""
-	def __init__(self, stock_id, scrape_time=6):
+	def __init__(self, stock_id, local=True, scrape_time=6):
 		"""
 			Args:
 
@@ -69,8 +70,8 @@ class RunInference:
 									comments and posts (Not meant to be externally manipulated)
 		"""
 
-		self.ops = get_args()
-		self.local = self.ops.local
+		# self.ops = get_args()
+		self.local = local
 		self.config = get_config()
 
 
