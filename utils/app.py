@@ -129,6 +129,10 @@ class App:
                         xlabel = 'Probability of Positive Sentiment'
                         )
                     )
+                    print('\n \n \n')
+                    print(all_post_probs)
+                    print('\n \n ')
+                    print(all_comment_probs)
 
                     
 
