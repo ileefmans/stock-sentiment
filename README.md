@@ -32,8 +32,6 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   1) Add labels to db    
   2) Fix connection to db during training (only an issue training locally)     
   3) Train w/ EC2        
-  4) Check why model is producing probabilities outside [0,1]    
-
 
 ## Overview  
 
