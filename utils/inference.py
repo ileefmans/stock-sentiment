@@ -163,7 +163,7 @@ class RunInference:
 			all_comment_probs = None
 			max_comment_prob = 0
 			max_comment = None
-			min_comment_prob = 0
+			min_comment_prob = 100
 			min_comment = None
 			for comment in tqdm(self.comment_dataloader, desc='Determining Sentiment From Comments: '):
 				comment_input_ids = comment['comment_input_ids'].to(self.device)
