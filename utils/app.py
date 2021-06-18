@@ -40,6 +40,7 @@ class App:
         ax.set_title(title, fontdict = {'fontsize': 20}, pad = 15)
         ax.set_xlabel(xlabel, fontsize=14, labelpad = 20)
         ax.set_ylabel('Density', fontsize=14, labelpad=20)
+        ax.set_xlim(left=0, right=1)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         return fig
