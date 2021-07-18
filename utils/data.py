@@ -336,9 +336,23 @@ class Stock:
 
 
     def set_start(self, date):
+        """
+
+            Args: 
+            
+                date (list): [year (int), month (int), day (int), hour (int), minute (int), seconds (int)]
+        """
+
         self.start = self.create_unix_stamp(date[0], date[1], date[2], date[3], date[4], date[5])
 
     def set_end(self, current=True, date=None):
+        """
+            Args:
+
+                current (bool): if True, end is current date and time; if False must set desired end date and time 
+                date (list): [year (int), month (int), day (int), hour (int), minute (int), seconds (int)]
+        """
+
         if current:
             self.end = int(time.time())
         else:
@@ -347,10 +361,31 @@ class Stock:
 
     # Create unix timestamp
     def create_unix_stamp(self, year, month, day, hour, minute, second):
+        """
+            Args:
+
+                year (int): year
+                month (int): month
+                day (int): day
+                hour (int): hour
+                minute (int): minute
+                second (int): second
+
+            Method for creating unix time stamp from list 
+        """
         dt = datetime.datetime(year, month, day, hour, minute, second)
         return int(time.mktime(dt.timetuple()))
 
     def convert(self, df):
+        """
+
+            Args:
+
+                df (pd.DataFrame): dataframe to be converted
+
+
+            Method for converting dataframe to dictionary
+        """
         prices = {}
         prices['_id'] = 0
         prices['open'] = list(df.o)
@@ -367,12 +402,16 @@ class Stock:
             Args:
 
                 stock_name (str): Name of stock for which to pull data
+
+            Method for scraping stock data
         """
 
         self.api_key = get_keys("Finnhub")
         self.finnhub_client = finnhub.Client(api_key=self.api_key)
         res = self.finnhub_client.stock_candles(stock_name, '1', self.start, self.end)
+
         df = pd.DataFrame(res)
+        
         df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
 
         prices = self.convert(df)
