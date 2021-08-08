@@ -414,9 +414,17 @@ class Stock:
         
         df['t'] = list(map(lambda x: datetime.datetime.fromtimestamp(int(str(x))).strftime('%Y-%m-%d %H:%M:%S'), df.t))
 
-        prices = self.convert(df)
+        #prices = self.convert(df)
+        df.rename(columns = {'o': 'open', 
+                            'h': 'high', 
+                            'l': 'low', 
+                            'c': 'close', 
+                            'v': 'volume', 
+                            't': 'timestamp', 
+                            's': 'status'},
+                inplace=True)
 
-        return prices
+        return df
 
 
 
