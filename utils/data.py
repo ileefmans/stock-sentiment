@@ -424,6 +424,13 @@ class Stock:
                             's': 'status'},
                 inplace=True)
 
+        # Engineer feature for high/low percentage
+        df['highlow_percent'] = df.low/df.high
+        # convert timestamp to datetime
+        df.timestamp = pd.to_datetime(df.timestamp)
+        # Create feature with lagged close
+        df['target'] = [df.loc[df.timestamp.dt.day==i.day-1,['timestamp', 'close']].close.mean() for i in tqdm(df.timestamp, "Gathering stock prices: ")]
+
         return df
 
 
