@@ -397,6 +397,11 @@ class Stock:
         prices['status'] = list(df.s) 
         return prices
 
+
+    def lag(self, feature, df):
+            df[feature+"_t1"] = [df.loc[df.timestamp.dt.day==i.day-1,['timestamp', feature]][feature].mean() for i in tqdm(df.timestamp)]
+
+
     def pull_data(self, stock_name):
         """
             Args:
@@ -429,7 +434,10 @@ class Stock:
         # convert timestamp to datetime
         df.timestamp = pd.to_datetime(df.timestamp)
         # Create feature with lagged close
-        df['target'] = [df.loc[df.timestamp.dt.day==i.day-1,['timestamp', 'close']].close.mean() for i in tqdm(df.timestamp, "Gathering stock prices: ")]
+
+
+        self.lag('highlow_percent', df)
+        #df['close_t1'] = [df.loc[df.timestamp.dt.day==i.day-1,['timestamp', 'close']].close.mean() for i in tqdm(df.timestamp, "Gathering stock prices: ")]
 
         return df
 
