@@ -11,4 +11,5 @@ torch==1.8.1
 transformers==4.6.1
 sklearn==0.0
 streamlit==0.82.0
+statsmodels==0.12.2
 #boto3==1.17.48
