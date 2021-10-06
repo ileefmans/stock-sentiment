@@ -47,21 +47,26 @@ class Forecast:
 		self.stockid = stock_id
 		self.sentiment = sentiment
 
+
+		# Lambda functions for formating dataframe containing dates and sentiment for posts and comments
 		get_prob = lambda x: float(x[1])
 		get_date = lambda x: datetime.utcfromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S')
 
+
+		# Create post and comment dataframes for associated sentiment by date
 		post_sentiment = pd.DataFrame({'date': list(map(get_date, self.sentiment['all_post_dates'])), 
 										'sentiment': list(map(get_prob, self.sentiment['all_post_probs']))})
 		comment_sentiment = pd.DataFrame({'date': list(map(get_date, self.sentiment['all_comment_dates'])), 
 											'sentiment': list(map(get_prob, self.sentiment['all_comment_probs']))})
 
+
+		# Merge into sentiment dataframe
 		self.sentiment = pd.concat([post_sentiment, comment_sentiment])
 
+		# Get stock data
 		self.start = get_start()
-
 		self.stock = Stock()
 		self.stock.set_start(self.start)
-
 		self.stock_data = self.stock.pull_data(stock_id)
 
 
