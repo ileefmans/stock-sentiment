@@ -1,5 +1,6 @@
 from data import Stock
 from inference import RunInference
+import pandas as pd
 from datetime import datetime, timedelta
 from statsmodels.tsa.arima.model import ARIMA
 
@@ -45,6 +46,16 @@ class Forecast:
 		"""
 		self.stockid = stock_id
 		self.sentiment = sentiment
+
+		get_prob = lambda x: float(x[1])
+		get_date = lambda x: datetime.utcfromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S')
+
+		post_sentiment = pd.DataFrame({'date': list(map(get_date, self.sentiment['all_post_dates'])), 
+										'sentiment': list(map(get_prob, self.sentiment['all_post_probs']))})
+		comment_sentiment = pd.DataFrame({'date': list(map(get_date, self.sentiment['all_comment_dates'])), 
+											'sentiment': list(map(get_prob, self.sentiment['all_comment_probs']))})
+
+		self.sentiment = pd.concat([post_sentiment, comment_sentiment])
 
 		self.start = get_start()
 
