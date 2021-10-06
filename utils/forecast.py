@@ -1,5 +1,6 @@
 from data import Stock
-from datetime import datetime
+from datetime import datetime, timedelta
+from statsmodels.tsa.arima.model import ARIMA
 
 
 
@@ -49,5 +50,31 @@ class Forecast:
 		self.stock.set_start(self.start)
 
 		self.stock_data = self.stock.pull_data(stock_id)
+
+	def arima(self):
+		"""
+			Method to make predictions using ARIMA
+		"""
+
+
+		# drop NAs resulting from lagged values
+		#data = self.stock_data.dropna(axis=0)
+
+		mod = ARIMA(endog=self.stock_data.close, exog = self.stock_data.highlow_percent, order=(1, 0, 0))
+		res = mod.fit()
+
+		return res
+
+
+
+
+
+
+
+
+
+
+
+
 
 
