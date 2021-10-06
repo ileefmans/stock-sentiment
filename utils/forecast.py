@@ -67,6 +67,7 @@ class Forecast:
 		self.start = get_start()
 		self.stock = Stock()
 		self.stock.set_start(self.start)
+		# Pull Data
 		self.stock_data = self.stock.pull_data(stock_id)
 
 
