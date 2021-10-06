@@ -29,8 +29,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   7) Set up monitoring  
  
 ## SMALL TODO:           
-  1) Add more labels to db    
-  2) Fix connection to db during training (only an issue training locally)     
+   1) Return date associated with sentiment prediction for each post and comment in inference script       
           
 
 ## Overview  
