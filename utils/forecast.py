@@ -1,4 +1,5 @@
 from data import Stock
+from inference import RunInference
 from datetime import datetime, timedelta
 from statsmodels.tsa.arima.model import ARIMA
 
@@ -33,7 +34,7 @@ class Forecast:
 	"""
 		Class to forecast direction of stock
 	"""
-	def __init__(self, stock_id, type='close'):
+	def __init__(self, stock_id, sentiment, type='close'):
 
 		"""
 			Args:
@@ -43,6 +44,7 @@ class Forecast:
 
 		"""
 		self.stockid = stock_id
+		self.sentiment = sentiment
 
 		self.start = get_start()
 
@@ -50,6 +52,8 @@ class Forecast:
 		self.stock.set_start(self.start)
 
 		self.stock_data = self.stock.pull_data(stock_id)
+
+
 
 	def arima(self):
 		"""
