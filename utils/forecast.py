@@ -80,7 +80,20 @@ class Forecast:
 			Method to match sentiment with stock prices
 		"""
 
-		
+		target = []
+
+		j = 0
+		for i in range(len(self.stock_data)):
+			if j != (len(self.sentiment)-1):
+
+
+				if abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j].date) <= abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j+1].date):
+					target.append(self.sentiment.iloc[j].sentiment)
+				else:
+					target.append(self.sentiment.iloc[j+1].sentiment)
+					j+=1
+
+
 
 
 
