@@ -62,6 +62,9 @@ class Forecast:
 
 		# Merge into sentiment dataframe
 		self.sentiment = pd.concat([post_sentiment, comment_sentiment])
+		# Convert date clumn to datetime
+		self.sentiment['date'] = pd.to_datetime(self.sentiment['date'])
+		self.sentiment.sort_values(by=['date'], inplace=True)
 
 		# Get stock data
 		self.start = get_start()
@@ -69,6 +72,15 @@ class Forecast:
 		self.stock.set_start(self.start)
 		# Pull Data
 		self.stock_data = self.stock.pull_data(stock_id)
+		# Convert timestamp to datetime in dataframe
+		self.stock_data['timestamp'] = pd.to_datetime(self.stock_data.timestamp)
+
+	def assign_sentiment(self):
+		"""
+			Method to match sentiment with stock prices
+		"""
+
+		
 
 
 
