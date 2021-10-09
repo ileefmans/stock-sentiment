@@ -24,12 +24,14 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   2) Create relational database to store data  
   3) Move from local device to AWS     
   4) Model for deriving sentiment  
-  5) Model for predicting stock direction 👈    
-  6) Build Web App  
+  5) Model for predicting stock direction        
+  6) Build Web App 👈     
   7) Set up monitoring  
  
 ## SMALL TODO:           
-   1) Determine procedure to retrain on existing data       
+   1) Add predictions to app and test  
+   2) Add prediction visualizations to app  
+   3) Add historical sentiment visualizations to app         
           
 
 ## Overview  
