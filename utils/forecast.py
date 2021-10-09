@@ -80,18 +80,38 @@ class Forecast:
 			Method to match sentiment with stock prices
 		"""
 
+		# Initialize target array
 		target = []
 
+		# Initialize index of sentiment dataframe
 		j = 0
+		# Iterate over all stock prices to assign sentiment
 		for i in range(len(self.stock_data)):
-			if j != (len(self.sentiment)-1):
+			
 
+			# Search for closest date in sentiment dataframe
+			searching = True
+			while searching:
 
-				if abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j].date) <= abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j+1].date):
-					target.append(self.sentiment.iloc[j].sentiment)
+				# Ensure no index out of range error
+				if j != (len(self.sentiment)-1):
+
+					# Increase index until closest date is found and assign corresponding sentiment
+					if abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j].date) <= abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j+1].date):
+						target.append(self.sentiment.iloc[j].sentiment)
+						searching = False
+					else:
+						target.append(self.sentiment.iloc[j+1].sentiment)
+						j+=1
+
+				# if last date in sentiment dataframe is reached this is the closest date
 				else:
-					target.append(self.sentiment.iloc[j+1].sentiment)
-					j+=1
+					target.append(self.sentiment.iloc[j].sentiment)	
+
+		# Add new column to stock price dataframe
+		self.stock_data['sentiment'] = target
+
+		return
 
 
 
@@ -105,6 +125,9 @@ class Forecast:
 
 		# drop NAs resulting from lagged values
 		#data = self.stock_data.dropna(axis=0)
+
+		# Retrieve associated sentiment for stock prices
+		self.assign_sentiment()
 
 		mod = ARIMA(endog=self.stock_data.close, exog = self.stock_data.highlow_percent, order=(1, 0, 0))
 		res = mod.fit()
