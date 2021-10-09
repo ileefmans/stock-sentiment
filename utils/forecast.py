@@ -122,7 +122,7 @@ class Forecast:
 
 
 
-	def arima(self):
+	def arima(self, periods):
 		"""
 			Method to make predictions using ARIMA
 		"""
@@ -133,6 +133,49 @@ class Forecast:
 
 		# Retrieve associated sentiment for stock prices
 		self.assign_sentiment()
+
+
+		extrap_sentiment = []
+
+		def ex_sent(data, count):
+		    if count == 0:
+		        return
+		    
+		    mod = ARIMA(endog=data, order=(1, 0, 0))
+		    res = mod.fit()
+		    
+		    extrap_sentiment.append(float(res.forecast()))
+		    
+		    
+		    ex_sent(data+[float(res.forecast())], count-1)
+
+		ex_sent(list(self.stock_data.sentiment), periods)
+
+
+		predictions = []
+
+		def pred(endog, exog):
+		    if len(endog)==len(exog):
+		        return
+		    
+		    mod = ARIMA(endog=endog, exog = exog[0:len(endog), 0], order=(1, 0, 0))
+		    res = mod.fit()
+		    
+		    predictions.append(res.forecast(exog=[exog[len(endog)-1, 0]]))
+		    
+		    
+		    pred(endog+[float(res.forecast(exog=[exog[len(endog)-1, 0]]))], exog)
+
+
+		try:
+			pred2(list(self.stock_data.close), np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1))
+
+		except:
+			print("WARNING: Constant Sentiment, Random Noise Added")
+			pred2(list(self.stock_data.close), np.add(np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1), np.random.randn(len(list(self.stock_data.sentiment)+extrap_sentiment), 1).reshape(-1, 1)))
+		finally:
+			pass
+
 
 		mod = ARIMA(endog=self.stock_data.close, exog = self.stock_data.highlow_percent, order=(1, 0, 0))
 		res = mod.fit()
