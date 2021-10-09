@@ -65,6 +65,10 @@ class Forecast:
 		# Convert date clumn to datetime
 		self.sentiment['date'] = pd.to_datetime(self.sentiment['date'])
 		self.sentiment.sort_values(by=['date'], inplace=True)
+		self.sentiment.reset_index(inplace=True)
+		self.sentiment.drop(columns=['index'], inplace=True)
+		self.sentiment = self.sentiment.groupby(['date']).mean()
+		self.sentiment.reset_index(inplace=True)
 
 		# Get stock data
 		self.start = get_start()
@@ -97,16 +101,17 @@ class Forecast:
 				if j != (len(self.sentiment)-1):
 
 					# Increase index until closest date is found and assign corresponding sentiment
-					if abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j].date) <= abs(self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j+1].date):
+					if abs((self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j].date).total_seconds()) <= abs((self.stock_data.iloc[i].timestamp - self.sentiment.iloc[j+1].date).total_seconds()):
 						target.append(self.sentiment.iloc[j].sentiment)
 						searching = False
 					else:
-						target.append(self.sentiment.iloc[j+1].sentiment)
+						#target.append(self.sentiment.iloc[j+1].sentiment)
 						j+=1
 
 				# if last date in sentiment dataframe is reached this is the closest date
 				else:
 					target.append(self.sentiment.iloc[j].sentiment)	
+					searching=False
 
 		# Add new column to stock price dataframe
 		self.stock_data['sentiment'] = target
