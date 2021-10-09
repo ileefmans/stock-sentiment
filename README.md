@@ -29,7 +29,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   7) Set up monitoring  
  
 ## SMALL TODO:           
-   1) assign sentiment to stock prices       
+   1) Determine procedure to retrain on existing data       
           
 
 ## Overview  
