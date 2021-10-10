@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import streamlit as st
 from inference import pull, RunInference
+from forecast import Forecast
 
 
 
