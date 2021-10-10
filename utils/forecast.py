@@ -176,11 +176,17 @@ class Forecast:
 		finally:
 			pass
 
+		date = []
 
-		mod = ARIMA(endog=self.stock_data.close, exog = self.stock_data.highlow_percent, order=(1, 0, 0))
-		res = mod.fit()
+		for i in range(1, periods+1):
+			# append new dates using median difference of existing timestamps
+			date.append(self.stock_data.timestamp.max() + self.stock_data.timestamp.diff().median()*i)
 
-		return res
+		return pd.DataFrame({'timestamp': date, 
+							'sentiment': extrap_sentiment, 
+							'close_price': predictions})
+
+		
 
 
 
