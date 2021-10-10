@@ -74,6 +74,10 @@ class App:
         if self.go:
 
             inference_output = self.infer()
+
+            forecast = Forecast(self.stock_id, inference_output)
+            stock_preds = forecast.arima()
+            print(stock_preds)
             
                 
             if not inference_output:
