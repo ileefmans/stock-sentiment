@@ -1,6 +1,7 @@
 from data import Stock
 from inference import RunInference
 import pandas as pd
+import numpy as np
 from datetime import datetime, timedelta
 from statsmodels.tsa.arima.model import ARIMA
 
@@ -168,11 +169,11 @@ class Forecast:
 
 
 		try:
-			pred2(list(self.stock_data.close), np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1))
+			pred(list(self.stock_data.close), np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1))
 
 		except:
 			print("WARNING: Constant Sentiment, Random Noise Added")
-			pred2(list(self.stock_data.close), np.add(np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1), np.random.randn(len(list(self.stock_data.sentiment)+extrap_sentiment), 1).reshape(-1, 1)))
+			pred(list(self.stock_data.close), np.add(np.array(list(self.stock_data.sentiment)+extrap_sentiment).reshape(-1, 1), np.random.randn(len(list(self.stock_data.sentiment)+extrap_sentiment), 1).reshape(-1, 1)))
 		finally:
 			pass
 
