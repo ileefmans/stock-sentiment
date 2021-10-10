@@ -122,7 +122,7 @@ class Forecast:
 
 
 
-	def arima(self, periods):
+	def arima(self, periods = 30):
 		"""
 			Method to make predictions using ARIMA
 		"""
