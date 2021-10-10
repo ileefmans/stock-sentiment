@@ -29,7 +29,7 @@ This application scrapes Reddit to extract sentiment for a desired stock and the
   7) Set up monitoring  
  
 ## SMALL TODO:           
-   1) Add predictions to app and test  
+   1) Add predictions to app and test (return dataframe with both prior stock movements and predicted stock movements from Forecast()    
    2) Add prediction visualizations to app  
    3) Add historical sentiment visualizations to app         
           
