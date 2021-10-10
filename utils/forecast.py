@@ -162,7 +162,7 @@ class Forecast:
 		    mod = ARIMA(endog=endog, exog = exog[0:len(endog), 0], order=(1, 0, 0))
 		    res = mod.fit()
 		    
-		    predictions.append(res.forecast(exog=[exog[len(endog)-1, 0]]))
+		    predictions.append(float(res.forecast(exog=[exog[len(endog)-1, 0]])))
 		    
 		    
 		    pred(endog+[float(res.forecast(exog=[exog[len(endog)-1, 0]]))], exog)
