@@ -46,6 +46,27 @@ class App:
         ax.spines['top'].set_visible(False)
         return fig
 
+
+    def prediction_plot(self, data):
+        plt.style.use('dark_background')
+
+        fig, ax = plt.subplots(figsize=(10,6))
+
+
+
+        data.loc[data.is_pred==0,:].plot.line(ax=ax, x="timestamp", y="close_price", color='darkred')
+        data.loc[data.is_pred==1,:].plot.line(ax=ax, x="timestamp", y="close_price", color='lightsteelblue')
+
+        ax.set_title("Predictions", fontdict = {'fontsize': 20}, pad = 15)
+        ax.set_xlabel('date', fontsize=14, labelpad = 20)
+        ax.set_ylabel('close price', fontsize=14, labelpad=20)
+
+        ax.legend(['price', 'predicted price'])
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        return fig
+        
+
     @st.cache(suppress_st_warning=True)
     def infer(self):
         with st.spinner("Checking to see if database needs to be updated..."):
