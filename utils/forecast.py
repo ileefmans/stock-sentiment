@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from statsmodels.tsa.arima.model import ARIMA
+import warnings
 
 
 
@@ -133,6 +134,12 @@ class Forecast:
 		#data = self.stock_data.dropna(axis=0)
 
 		# Retrieve associated sentiment for stock prices
+
+		# Only print warning once
+		warnings.filterwarnings(action="once")
+
+
+
 		self.assign_sentiment()
 
 
@@ -183,9 +190,12 @@ class Forecast:
 			# append new dates using median difference of existing timestamps
 			date.append(self.stock_data.timestamp.max() + self.stock_data.timestamp.diff().median()*i)
 
-		return pd.DataFrame({'timestamp': date, 
-							'sentiment': extrap_sentiment, 
-							'close_price': predictions})
+
+		return pd.DataFrame({'timestamp': list(self.stock_data.timestamp) + date, 
+							'sentiment': list(self.stock_data.sentiment) + extrap_sentiment, 
+							'close_price': list (self.stock_data.close) + predictions,
+							'is_pred': [0 for i in range(len(self.stock_data))] + [1 for i in range(len(date))]
+							})
 
 		
 
