@@ -94,11 +94,13 @@ class App:
     def run(self):
         if self.go:
 
+
             inference_output = self.infer()
 
-            forecast = Forecast(self.stock_id, inference_output)
-            stock_preds = forecast.arima()
-            print(stock_preds)
+            with st.spinner("Forecasting..."):
+                forecast = Forecast(self.stock_id, inference_output)
+                stock_preds = forecast.arima()
+                
             
                 
             if not inference_output:
@@ -166,7 +168,7 @@ class App:
                 with my_expander4:
                     st.text("")
 
-                    pyplot(self.prediction_plot(
+                    st.pyplot(self.prediction_plot(
                         data = stock_preds
                         )
                     )
