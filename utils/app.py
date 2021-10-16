@@ -25,7 +25,7 @@ class App:
 
         self.testing_env = testing_env
         self.stock_id = st.sidebar.text_input("Stock Symbol")
-        self.mode = st.sidebar.selectbox("Mode", ['*choose mode','Visualization', 'Prediction'], index=0)
+        #self.mode = st.sidebar.selectbox("Mode", ['*choose mode','Visualization', 'Prediction'], index=0)
         self.go = st.sidebar.button("Go")
         
 
