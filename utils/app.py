@@ -65,7 +65,7 @@ class App:
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         return fig
-        
+
 
     @st.cache(suppress_st_warning=True)
     def infer(self):
@@ -160,6 +160,16 @@ class App:
                     print(all_post_probs)
                     print('\n \n ')
                     print(all_comment_probs)
+
+
+                my_expander4 = st.beta_expander("Stock Forecast")
+                with my_expander4:
+                    st.text("")
+
+                    pyplot(self.prediction_plot(
+                        data = stock_preds
+                        )
+                    )
 
                     
 
