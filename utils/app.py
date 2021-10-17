@@ -66,6 +66,27 @@ class App:
         ax.spines['top'].set_visible(False)
         return fig
 
+    def sentiment_plot(self, data):
+        plt.style.use('dark_background')
+
+        fig, ax = plt.subplots(figsize=(10,6))
+
+
+        data.plot.line(ax=ax, x='date', y='sentiment', color='darkred')
+
+        ticks = data.date
+        labels = [str(i)[:-3] for i in data.date]
+
+        ax.set_title("Sentiment Over Time", fontdict={'fontsize': 20}, pad = 15)
+        ax.set_xlabel('Date', fontsize=14, labelpad=20)
+        ax.set_ylabel('Sentiment', fontsize=14, labelpad=20)
+        ax.set_xticks(labels)
+        ax.set_xticklabels(labels)
+        ax.set_ylim(bottom=0, top=1)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        return fig
+
 
     @st.cache(suppress_st_warning=True)
     def infer(self):
