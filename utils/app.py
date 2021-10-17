@@ -189,8 +189,16 @@ class App:
                 with my_expander4:
                     st.text("")
 
-                    st.pyplot(self.prediction_plot(
+                    col1, col2 = st.beta_columns(2)
+
+
+                    col1.pyplot(self.prediction_plot(
                         data = stock_preds
+                        )
+                    )
+
+                    col2.pyplot(self.sentiment_plot(
+                        data = forecast.sentiment
                         )
                     )
 
