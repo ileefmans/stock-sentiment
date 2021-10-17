@@ -18,7 +18,7 @@ class App:
     """
     def __init__(self, testing_env=False):
         st.title('**Stock Sentiment**')
-        st.markdown(""" #### Application for scraping redit for metrics and visualizations regarding sentiment towards a particular stock """)
+        st.markdown(""" #### Application for scraping Reddit for metrics, visualizations, and predictions regarding sentiment towards a particular stock """)
         st.text("")
         st.text("")
         st.text("")
