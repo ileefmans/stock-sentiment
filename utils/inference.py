@@ -78,7 +78,11 @@ class RunInference:
 		self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 		
 		if self.config['model']=='classifier':
-			self.model = FineTuneClassifier().to(self.device)
+			if self.local:
+				self.model = torch.load("models/classifier.pt", map_location=torch.device('cpu') ).to(self.device)
+			else:
+				self.model = torch.load("models/classifier.pt").to(self.device)
+
 
 		elif self.config['model']=='base':
 			if self.local:
